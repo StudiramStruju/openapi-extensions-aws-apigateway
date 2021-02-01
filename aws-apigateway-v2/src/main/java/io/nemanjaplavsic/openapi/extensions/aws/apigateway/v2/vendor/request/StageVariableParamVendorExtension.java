@@ -1,6 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.vendor.request;
 
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationRequestParamType;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationRequestParameterType;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -8,11 +8,11 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class StageVariableParamVendorExtension extends RequestParamVendorExtension {
 
-  public StageVariableParamVendorExtension(IntegrationRequestParamType integrationRequestParamType,
+  public StageVariableParamVendorExtension(IntegrationRequestParameterType integrationRequestParameterType,
                                            String integrationRequestParamName,
                                            String stageVariableName) {
     super(
-        String.format("integration.request.%s.%s", integrationRequestParamType.key(), integrationRequestParamName),
+        String.format("integration.request.%s.%s", integrationRequestParameterType.key(), integrationRequestParamName),
         String.format("stageVariables.%s", stageVariableName)
     );
   }

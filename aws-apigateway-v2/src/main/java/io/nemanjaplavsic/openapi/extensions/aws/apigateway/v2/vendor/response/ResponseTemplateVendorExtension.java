@@ -9,7 +9,13 @@ import springfox.documentation.service.StringVendorExtension;
 @ToString(callSuper = true)
 public class ResponseTemplateVendorExtension extends StringVendorExtension {
 
+  public static final String DEFAULT_TEMPLATE = "$input.json('$')";
+
   public ResponseTemplateVendorExtension(MediaType mediaType, String template) {
     super(mediaType.toString(), template);
+  }
+
+  public ResponseTemplateVendorExtension(String mediaType, String template) {
+    this(MediaType.valueOf(mediaType), template);
   }
 }

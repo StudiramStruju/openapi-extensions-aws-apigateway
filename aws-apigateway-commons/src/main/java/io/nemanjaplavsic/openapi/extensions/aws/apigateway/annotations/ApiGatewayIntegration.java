@@ -118,18 +118,18 @@ public @interface ApiGatewayIntegration {
    * </ul>
    * are also valid. For the body parameter, the <param-name> is a JSON path expression without the $. prefix.
    */
-  RequestParameter[] requestParameters() default {};
+  IntegrationRequestParameters requestParameters() default @IntegrationRequestParameters;
 
   /**
    * Mapping templates for a request payload of specified MIME types.
    */
-  RequestTemplate[] requestTemplates() default {};
+  IntegrationRequestTemplates requestTemplates() default @IntegrationRequestTemplates;
 
   /**
    * Defines the method's responses and specifies desired parameter mappings or
    * payload mappings from integration responses to method responses.
    */
-  Responses[] responses() default {};
+  IntegrationResponses responses() default @IntegrationResponses;
 
   /**
    * Integration timeouts between 50 ms and 29,000 ms.
@@ -153,7 +153,7 @@ public @interface ApiGatewayIntegration {
   /**
    * Specifies the TLS configuration for an integration.
    */
-  TlsConfig tlsConfig() default @TlsConfig;
+  IntegrationTlsConfig tlsConfig() default @IntegrationTlsConfig;
 
   /**
    * The endpoint URI of the backend. For integrations of the aws type, this is an ARN value.

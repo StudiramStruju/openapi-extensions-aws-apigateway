@@ -1,6 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.resolver;
 
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.resolver.integration.ApiGatewayIntegrationExtensionPropertyResolver;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.resolver.integration.ApiGatewayPropertyExtensionResolver;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.vendor.ApiGatewayIntegrationVendorExtension;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ApiGatewayIntegrationExtensionResolver implements ApiGatewayExtensionResolver {
 
-  private final List<ApiGatewayIntegrationExtensionPropertyResolver> propertyResolvers;
+  private final List<ApiGatewayPropertyExtensionResolver> propertyResolvers;
 
   @Override
   public VendorExtension resolve(OperationContext context) {

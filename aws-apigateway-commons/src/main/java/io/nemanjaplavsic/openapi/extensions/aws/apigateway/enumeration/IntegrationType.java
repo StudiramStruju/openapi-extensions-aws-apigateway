@@ -1,6 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration;
 
-public enum IntegrationType implements EnumKey {
+public enum IntegrationType {
   /**
    * For integrating the API method request with an AWS service action, including the Lambda function-invoking action. With the Lambda function-invoking action, this is referred to as the Lambda custom integration. With any other AWS service action, this is known as AWS integration.
    */

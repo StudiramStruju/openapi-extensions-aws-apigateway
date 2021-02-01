@@ -1,6 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration;
 
-public enum PassThroughBehavior implements EnumKey {
+public enum PassThroughBehavior {
   /**
    * Passes the method request body through the integration request to the back end without transformation when the method request content type does not match any content type associated with the mapping templates defined in the integration request.
    */
