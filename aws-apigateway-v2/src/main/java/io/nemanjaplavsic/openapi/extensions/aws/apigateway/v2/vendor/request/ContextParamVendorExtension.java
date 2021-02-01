@@ -1,6 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.vendor.request;
 
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationRequestParamType;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationRequestParameterType;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -12,11 +12,11 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class ContextParamVendorExtension extends RequestParamVendorExtension {
 
-  public ContextParamVendorExtension(IntegrationRequestParamType integrationRequestParamType,
+  public ContextParamVendorExtension(IntegrationRequestParameterType integrationRequestParameterType,
                                      String integrationRequestParamName,
                                      String contextVariableName) {
     super(
-        String.format("integration.request.%s.%s", integrationRequestParamType.key(), integrationRequestParamName),
+        String.format("integration.request.%s.%s", integrationRequestParameterType.key(), integrationRequestParamName),
         String.format("context.%s", contextVariableName)
     );
   }

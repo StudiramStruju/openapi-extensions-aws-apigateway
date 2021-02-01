@@ -1,6 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration;
 
-public enum IntegrationSubType implements EnumKey {
+public enum IntegrationSubType {
 
   EVENT_BRIDGE_PUT_EVENTS("EventBridge-PutEvents"),
   SQS_SEND_MESSAGE("SQS-SendMessage"),

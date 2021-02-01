@@ -1,6 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration;
 
-public enum HttpMethod implements EnumKey {
+public enum HttpMethod {
   POST("POST"),
   GET("GET"),
   PUT("PUT"),

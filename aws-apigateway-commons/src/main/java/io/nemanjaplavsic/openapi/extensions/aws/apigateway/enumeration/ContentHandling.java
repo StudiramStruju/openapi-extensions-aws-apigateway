@@ -1,6 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration;
 
-public enum ContentHandling implements EnumKey {
+public enum ContentHandling {
   /**
    * When no use for this feature
    */

@@ -1,6 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration;
 
-public enum ConnectionType implements EnumKey {
+public enum ConnectionType {
   /**
    * For Private integration
    */

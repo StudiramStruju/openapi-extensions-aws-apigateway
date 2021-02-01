@@ -1,0 +1,57 @@
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.configuration;
+
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ConnectionType;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ContentHandling;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.PassThroughBehavior;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+import org.springframework.boot.context.properties.ConstructorBinding;
+import org.springframework.lang.Nullable;
+
+import java.util.Objects;
+
+@Getter
+@EqualsAndHashCode
+@ToString
+public class ApiGatewayServiceProperties {
+  @Nullable
+  private final String uri;
+  @Nullable
+  private final String basePath;
+  @Nullable
+  private final String connectionId;
+  @Nullable
+  private final ConnectionType connectionType;
+  @Nullable
+  private final String[] cacheKeyParameters;
+  @Nullable
+  private final String cacheNamespace;
+  @Nullable
+  private final String credentials;
+  @Nullable
+  private final ContentHandling contentHandling;
+  @Nullable
+  private final PassThroughBehavior passthroughBehavior;
+
+  @ConstructorBinding
+  public ApiGatewayServiceProperties(@Nullable String uri,
+                                     @Nullable String basePath,
+                                     @Nullable String connectionId,
+                                     @Nullable ConnectionType connectionType,
+                                     @Nullable String[] cacheKeyParameters,
+                                     @Nullable String cacheNamespace,
+                                     @Nullable String credentials,
+                                     @Nullable ContentHandling contentHandling,
+                                     @Nullable PassThroughBehavior passthroughBehavior) {
+    this.uri = uri;
+    this.basePath = basePath;
+    this.connectionId = connectionId;
+    this.connectionType = Objects.requireNonNullElse(connectionType, ConnectionType.NONE);
+    this.cacheKeyParameters = cacheKeyParameters;
+    this.cacheNamespace = cacheNamespace;
+    this.credentials = credentials;
+    this.contentHandling = Objects.requireNonNullElse(contentHandling, ContentHandling.NONE);
+    this.passthroughBehavior = Objects.requireNonNullElse(passthroughBehavior, PassThroughBehavior.NONE);
+  }
+}

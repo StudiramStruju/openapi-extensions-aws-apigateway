@@ -1,7 +1,7 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.vendor.request;
 
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationRequestParamType;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.MethodRequestParamType;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationRequestParameterType;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.MethodRequestParameterType;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -9,13 +9,13 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class MethodRequestParamVendorExtension extends RequestParamVendorExtension {
 
-  public MethodRequestParamVendorExtension(IntegrationRequestParamType integrationRequestParamType,
+  public MethodRequestParamVendorExtension(IntegrationRequestParameterType integrationRequestParameterType,
                                            String integrationRequestParamName,
-                                           MethodRequestParamType methodRequestParamType,
+                                           MethodRequestParameterType methodRequestParameterType,
                                            String methodRequestParamName) {
     super(
-        String.format("integration.request.%s.%s", integrationRequestParamType.key(), integrationRequestParamName),
-        String.format("method.request.%s.%s", methodRequestParamType.key(), methodRequestParamName)
+        String.format("integration.request.%s.%s", integrationRequestParameterType.key(), integrationRequestParamName),
+        String.format("method.request.%s.%s", methodRequestParameterType.key(), methodRequestParamName)
     );
   }
 }

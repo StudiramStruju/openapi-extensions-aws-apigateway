@@ -1,6 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration;
 
-public enum IntegrationResponseParameterType implements EnumKey {
+public enum IntegrationResponseParameterType {
   HEADER("header"),
   BODY("body"),
   NONE(null);
