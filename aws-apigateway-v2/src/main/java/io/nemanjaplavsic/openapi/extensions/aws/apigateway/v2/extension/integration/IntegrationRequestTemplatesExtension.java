@@ -1,4 +1,4 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
 import springfox.documentation.service.ObjectVendorExtension;
 
@@ -48,6 +48,16 @@ public class IntegrationRequestTemplatesExtension implements IntegrationExtensio
         .map(IntegrationRequestTemplateExtension::toVendorExtension)
         .forEach(extension::addProperty);
     return extension;
+  }
+
+  @Override
+  public boolean isValid() {
+    try {
+      Objects.requireNonNull(templates);
+      return !templates.isEmpty();
+    } catch (NullPointerException e) {
+      return false;
+    }
   }
 
   @Override

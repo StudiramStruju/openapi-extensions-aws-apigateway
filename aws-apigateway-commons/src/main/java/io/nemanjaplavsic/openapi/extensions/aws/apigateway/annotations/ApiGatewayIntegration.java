@@ -74,14 +74,6 @@ public @interface ApiGatewayIntegration {
   HttpMethod httpMethod() default HttpMethod.RESOLVE_FROM_METHOD;
 
   /**
-   * Specifies the integration subtype for an AWS service integration.
-   * Supported only for HTTP APIs. For supported integration subtypes,
-   * see <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-aws-services-reference.html">
-   * Integration subtype reference.</a>
-   */
-  String integrationSubtype() default "";
-
-  /**
    * Specifies how a request payload of unmapped content type is passed
    * through the integration request without modification. Supported values are when_no_templates,
    * when_no_match, and never. For more information, see
@@ -89,17 +81,6 @@ public @interface ApiGatewayIntegration {
    * Integration.passthroughBehavior</a>.
    */
   PassThroughBehavior passthroughBehavior() default PassThroughBehavior.NONE;
-
-  /**
-   * Specifies the format of the payload sent to an integration. Required for HTTP APIs.
-   * For HTTP APIs, supported values for Lambda proxy integrations are 1.0 and 2.0.
-   * For all other integrations, 1.0 is the only supported value. To learn more, see
-   * <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html">
-   * Working with AWS Lambda proxy integrations for HTTP APIs</a> and
-   * <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-aws-services-reference.html">
-   * Integration subtype reference.</a>
-   */
-  String payloadFormatVersion() default "";
 
   /**
    * For REST APIs, the value is typically a predefined method request parameter of the
