@@ -1,4 +1,4 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
 import springfox.documentation.service.ObjectVendorExtension;
 
@@ -41,7 +41,7 @@ public class IntegrationResponseParametersExtension implements IntegrationExtens
     return this;
   }
 
-  public List<IntegrationResponseParameterExtension> responseParameters() {
+  public List<IntegrationResponseParameterExtension> parameters() {
     return responseParameters;
   }
 
@@ -52,6 +52,16 @@ public class IntegrationResponseParametersExtension implements IntegrationExtens
         .map(IntegrationResponseParameterExtension::toVendorExtension)
         .forEach(extension::addProperty);
     return extension;
+  }
+
+  @Override
+  public boolean isValid() {
+    try {
+      Objects.requireNonNull(responseParameters);
+      return !responseParameters.isEmpty();
+    } catch (NullPointerException e) {
+      return false;
+    }
   }
 
   @Override

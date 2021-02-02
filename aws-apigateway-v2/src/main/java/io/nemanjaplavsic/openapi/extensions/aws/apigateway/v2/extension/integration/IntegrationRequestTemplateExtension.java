@@ -1,6 +1,7 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import springfox.documentation.service.StringVendorExtension;
 
 import java.util.Objects;
@@ -56,6 +57,17 @@ public class IntegrationRequestTemplateExtension implements IntegrationExtension
     Objects.requireNonNull(mediaType);
     Objects.requireNonNull(template);
     return new StringVendorExtension(mediaType.toString(), template);
+  }
+
+  @Override
+  public boolean isValid() {
+    try {
+      Objects.requireNonNull(mediaType);
+      Objects.requireNonNull(template);
+      return StringUtils.hasText(template);
+    } catch (NullPointerException e) {
+      return false;
+    }
   }
 
   @Override

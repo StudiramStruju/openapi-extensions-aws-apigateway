@@ -1,4 +1,4 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationResponseParameterType;
 import springfox.documentation.service.StringVendorExtension;
@@ -15,9 +15,9 @@ public class IntegrationResponseParameterExtension implements IntegrationExtensi
   public IntegrationResponseParameterExtension(String methodHeaderName,
                                                IntegrationResponseParameterType integrationParameterType,
                                                String integrationParameterName) {
-    this.methodHeaderName = Objects.requireNonNull(methodHeaderName);
-    this.integrationParameterType = Objects.requireNonNull(integrationParameterType);
-    this.integrationParameterName = Objects.requireNonNull(integrationParameterName);
+    this.methodHeaderName = methodHeaderName;
+    this.integrationParameterType = integrationParameterType;
+    this.integrationParameterName = integrationParameterName;
   }
 
   public static Builder builder() {
@@ -66,6 +66,19 @@ public class IntegrationResponseParameterExtension implements IntegrationExtensi
         String.format("method.response.header.%s", methodHeaderName),
         String.format("integration.response.%s.%s", integrationParameterType.key(), integrationParameterName)
     );
+  }
+
+  @Override
+  public boolean isValid() {
+    try {
+      Objects.requireNonNull(methodHeaderName);
+      Objects.requireNonNull(integrationParameterType);
+      Objects.requireNonNull(integrationParameterType.key());
+      Objects.requireNonNull(integrationParameterName);
+      return true;
+    } catch (NullPointerException e) {
+      return false;
+    }
   }
 
   @Override

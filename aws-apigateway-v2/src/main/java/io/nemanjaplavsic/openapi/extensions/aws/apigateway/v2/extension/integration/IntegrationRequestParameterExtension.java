@@ -1,4 +1,4 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationRequestParameterType;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.MethodRequestParameterType;
@@ -33,9 +33,9 @@ public class IntegrationRequestParameterExtension implements IntegrationExtensio
                                               @Nullable String contextVariableName,
                                               @Nullable String stageVariableName,
                                               @Nullable String staticValueName) {
-    this.source = Objects.requireNonNull(source);
-    this.integrationParameterType = Objects.requireNonNull(integrationParameterType);
-    this.integrationParameterName = Objects.requireNonNull(integrationParameterName);
+    this.source = source;
+    this.integrationParameterType = integrationParameterType;
+    this.integrationParameterName = integrationParameterName;
     this.methodParameterType = Objects.requireNonNullElse(methodParameterType, MethodRequestParameterType.NONE);
     this.methodParameterName = methodParameterName;
     this.contextVariableName = contextVariableName;
@@ -141,42 +141,63 @@ public class IntegrationRequestParameterExtension implements IntegrationExtensio
   public StringVendorExtension toVendorExtension() {
     switch (source) {
       case METHOD:
-        Objects.requireNonNull(methodParameterType.key(),
-            String.format("IntegrationRequestParameter requires methodParameterType for source = '%s'", source)
-        );
-        Objects.requireNonNull(methodParameterName,
-            String.format("IntegrationRequestParameter requires methodParameterName for source = '%s'", source)
-        );
         return new StringVendorExtension(
             String.format("integration.request.%s.%s", integrationParameterType.key(), integrationParameterName),
             String.format("method.request.%s.%s", methodParameterType.key(), methodParameterName)
         );
       case CONTEXT:
-        Objects.requireNonNull(contextVariableName,
-            String.format("IntegrationRequestParameter requires contextVariableName for source = '%s'", source)
-        );
         return new StringVendorExtension(
             String.format("integration.request.%s.%s", integrationParameterType.key(), integrationParameterName),
             String.format("context.%s", contextVariableName)
         );
       case STAGE:
-        Objects.requireNonNull(stageVariableName,
-            String.format("IntegrationRequestParameter requires stageVariableName for source = '%s'", source)
-        );
         return new StringVendorExtension(
             String.format("integration.request.%s.%s", integrationParameterType.key(), integrationParameterName),
             String.format("stageVariables.%s", stageVariableName)
         );
       case STATIC:
-        Objects.requireNonNull(staticValueName,
-            String.format("IntegrationRequestParameter requires v for source = '%s'", source)
-        );
         return new StringVendorExtension(
             String.format("integration.request.%s.%s", integrationParameterType.key(), integrationParameterName),
             String.format("%s", staticValueName)
         );
       default:
         throw new IntegrationExtensionException("IntegrationRequestParameter 'source' must be defined!");
+    }
+  }
+
+  @Override
+  public boolean isValid() {
+    try {
+      Objects.requireNonNull(source);
+      switch (source) {
+        case METHOD:
+          Objects.requireNonNull(methodParameterType.key(),
+              String.format("IntegrationRequestParameter requires methodParameterType for source = '%s'", source)
+          );
+          Objects.requireNonNull(methodParameterName,
+              String.format("IntegrationRequestParameter requires methodParameterName for source = '%s'", source)
+          );
+          return true;
+        case CONTEXT:
+          Objects.requireNonNull(contextVariableName,
+              String.format("IntegrationRequestParameter requires contextVariableName for source = '%s'", source)
+          );
+          return true;
+        case STAGE:
+          Objects.requireNonNull(stageVariableName,
+              String.format("IntegrationRequestParameter requires stageVariableName for source = '%s'", source)
+          );
+          return true;
+        case STATIC:
+          Objects.requireNonNull(staticValueName,
+              String.format("IntegrationRequestParameter requires staticValueName for source = '%s'", source)
+          );
+          return true;
+        default:
+          return false;
+      }
+    } catch (NullPointerException e) {
+      return false;
     }
   }
 
