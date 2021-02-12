@@ -4,12 +4,14 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.Integrati
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.MethodRequestParameterType;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.RequestParameterSource;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.exception.IntegrationExtensionException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import springfox.documentation.service.StringVendorExtension;
 
 import java.util.Objects;
 import java.util.StringJoiner;
 
+@Slf4j
 public class IntegrationRequestParameterExtension implements IntegrationExtension<StringVendorExtension> {
 
   private RequestParameterSource source;
@@ -131,8 +133,11 @@ public class IntegrationRequestParameterExtension implements IntegrationExtensio
   }
 
   public boolean matches(IntegrationRequestParameterExtension parameterExtension) {
-    return integrationParameterType.equals(parameterExtension.integrationParameterType())
-        && integrationParameterName.equals(parameterExtension.integrationParameterName());
+    if (isValid()) {
+      return integrationParameterType.equals(parameterExtension.integrationParameterType())
+          && integrationParameterName.equals(parameterExtension.integrationParameterName());
+    }
+    return false;
   }
 
   public IntegrationRequestParameterExtension update(IntegrationRequestParameterExtension requestParameter) {
@@ -204,6 +209,7 @@ public class IntegrationRequestParameterExtension implements IntegrationExtensio
           return false;
       }
     } catch (NullPointerException e) {
+      log.warn(e.getMessage(), e);
       return false;
     }
   }
