@@ -12,6 +12,9 @@ public class IntegrationCacheNamespaceExtension implements IntegrationExtension<
 
   private String cacheNamespace;
 
+  public IntegrationCacheNamespaceExtension() {
+  }
+
   public IntegrationCacheNamespaceExtension(String cacheNamespace) {
     this.cacheNamespace = cacheNamespace;
   }

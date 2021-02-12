@@ -1,6 +1,7 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationResponseParameterType;
+import org.springframework.lang.Nullable;
 import springfox.documentation.service.StringVendorExtension;
 
 import java.util.Objects;
@@ -8,13 +9,16 @@ import java.util.StringJoiner;
 
 public class IntegrationResponseParameterExtension implements IntegrationExtension<StringVendorExtension> {
 
+  @Nullable
   private String methodHeaderName;
+  @Nullable
   private IntegrationResponseParameterType integrationParameterType;
+  @Nullable
   private String integrationParameterName;
 
-  public IntegrationResponseParameterExtension(String methodHeaderName,
-                                               IntegrationResponseParameterType integrationParameterType,
-                                               String integrationParameterName) {
+  public IntegrationResponseParameterExtension(@Nullable String methodHeaderName,
+                                               @Nullable IntegrationResponseParameterType integrationParameterType,
+                                               @Nullable String integrationParameterName) {
     this.methodHeaderName = methodHeaderName;
     this.integrationParameterType = integrationParameterType;
     this.integrationParameterName = integrationParameterName;
@@ -24,35 +28,38 @@ public class IntegrationResponseParameterExtension implements IntegrationExtensi
     return new Builder();
   }
 
-  public IntegrationResponseParameterExtension methodHeaderName(String methodHeaderName) {
+  public IntegrationResponseParameterExtension methodHeaderName(@Nullable String methodHeaderName) {
     this.methodHeaderName = methodHeaderName;
     return this;
   }
 
-  public IntegrationResponseParameterExtension integrationParameterType(IntegrationResponseParameterType integrationParameterType) {
+  public IntegrationResponseParameterExtension integrationParameterType(@Nullable IntegrationResponseParameterType integrationParameterType) {
     this.integrationParameterType = integrationParameterType;
     return this;
   }
 
-  public IntegrationResponseParameterExtension integrationParameterName(String integrationParameterName) {
+  public IntegrationResponseParameterExtension integrationParameterName(@Nullable String integrationParameterName) {
     this.integrationParameterName = integrationParameterName;
     return this;
   }
 
+  @Nullable
   public String methodHeaderName() {
     return methodHeaderName;
   }
 
+  @Nullable
   public IntegrationResponseParameterType integrationParameterType() {
     return integrationParameterType;
   }
 
+  @Nullable
   public String integrationParameterName() {
     return integrationParameterName;
   }
 
   public boolean matches(IntegrationResponseParameterExtension parameterExtension) {
-    return methodHeaderName.equals(parameterExtension.methodHeaderName());
+    return Objects.equals(methodHeaderName, parameterExtension.methodHeaderName());
   }
 
   public IntegrationResponseParameterExtension update(IntegrationResponseParameterExtension parameterExtension) {
@@ -106,24 +113,27 @@ public class IntegrationResponseParameterExtension implements IntegrationExtensi
   }
 
   public static class Builder {
+    @Nullable
     private String methodHeaderName;
+    @Nullable
     private IntegrationResponseParameterType integrationParameterType;
+    @Nullable
     private String integrationParameterName;
 
     Builder() {
     }
 
-    public Builder methodHeaderName(String methodHeaderName) {
+    public Builder methodHeaderName(@Nullable String methodHeaderName) {
       this.methodHeaderName = methodHeaderName;
       return this;
     }
 
-    public Builder integrationParameterType(IntegrationResponseParameterType integrationParameterType) {
+    public Builder integrationParameterType(@Nullable IntegrationResponseParameterType integrationParameterType) {
       this.integrationParameterType = integrationParameterType;
       return this;
     }
 
-    public Builder integrationParameterName(String integrationParameterName) {
+    public Builder integrationParameterName(@Nullable String integrationParameterName) {
       this.integrationParameterName = integrationParameterName;
       return this;
     }

@@ -49,6 +49,7 @@ public class IntegrationRequestParametersExtension implements IntegrationExtensi
   public ObjectVendorExtension toVendorExtension() {
     ObjectVendorExtension extension = new ObjectVendorExtension(NAME);
     requestParameters.stream()
+        .filter(IntegrationRequestParameterExtension::isValid)
         .map(IntegrationRequestParameterExtension::toVendorExtension)
         .forEach(extension::addProperty);
     return extension;

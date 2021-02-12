@@ -1,5 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ContentHandling;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 import springfox.documentation.service.ObjectVendorExtension;
@@ -15,6 +16,12 @@ public class IntegrationResponseExtension implements IntegrationExtension<Object
   private IntegrationContentHandlingExtension contentHandling;
   private final IntegrationResponseTemplatesExtension templates;
   private final IntegrationResponseParametersExtension parameters;
+
+  public IntegrationResponseExtension() {
+    templates = new IntegrationResponseTemplatesExtension();
+    parameters = new IntegrationResponseParametersExtension();
+    contentHandling = new IntegrationContentHandlingExtension();
+  }
 
   public IntegrationResponseExtension(String responseStatusPattern,
                                       IntegrationStatusCodeExtension statusCode,
@@ -49,6 +56,11 @@ public class IntegrationResponseExtension implements IntegrationExtension<Object
 
   public IntegrationResponseExtension contentHandling(IntegrationContentHandlingExtension contentHandling) {
     this.contentHandling = contentHandling;
+    return this;
+  }
+
+  public IntegrationResponseExtension contentHandling(ContentHandling contentHandling) {
+    this.contentHandling = new IntegrationContentHandlingExtension(contentHandling);
     return this;
   }
 
@@ -180,6 +192,11 @@ public class IntegrationResponseExtension implements IntegrationExtension<Object
 
     public Builder contentHandling(IntegrationContentHandlingExtension contentHandling) {
       this.contentHandling = contentHandling;
+      return this;
+    }
+
+    public Builder contentHandling(ContentHandling contentHandling) {
+      this.contentHandling = new IntegrationContentHandlingExtension(contentHandling);
       return this;
     }
 

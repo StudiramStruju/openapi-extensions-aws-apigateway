@@ -12,6 +12,9 @@ public class IntegrationTimeoutInMillisExtension implements IntegrationExtension
 
   private Integer timeoutInMillis;
 
+  public IntegrationTimeoutInMillisExtension() {
+  }
+
   public IntegrationTimeoutInMillisExtension(Integer timeoutInMillis) {
     this.timeoutInMillis = Objects.requireNonNullElse(timeoutInMillis, DEFAULT);
   }

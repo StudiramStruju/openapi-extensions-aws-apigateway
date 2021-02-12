@@ -15,6 +15,9 @@ public class IntegrationHttpMethodExtension implements IntegrationExtension<Stri
   private HttpMethod httpMethod;
   private RequestMethod requestMethod;
 
+  public IntegrationHttpMethodExtension() {
+  }
+
   public IntegrationHttpMethodExtension(@Nullable HttpMethod httpMethod, RequestMethod requestMethod) {
     this.httpMethod = Objects.requireNonNullElse(httpMethod, HttpMethod.RESOLVE_FROM_METHOD);
     this.requestMethod = requestMethod;

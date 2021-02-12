@@ -34,6 +34,11 @@ public class IntegrationCacheKeyParametersExtension implements IntegrationExtens
     return this;
   }
 
+  public IntegrationCacheKeyParametersExtension cacheKeyParameter(Set<String> parameters) {
+    parameters.forEach(this::cacheKeyParameter);
+    return this;
+  }
+
   public Set<String> cacheKeyParameters() {
     return cacheKeyParameters;
   }

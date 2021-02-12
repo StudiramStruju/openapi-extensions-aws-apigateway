@@ -12,6 +12,9 @@ public class IntegrationPassThroughBehaviorExtension implements IntegrationExten
 
   private PassThroughBehavior passThroughBehavior;
 
+  public IntegrationPassThroughBehaviorExtension() {
+  }
+
   public IntegrationPassThroughBehaviorExtension(PassThroughBehavior passThroughBehavior) {
     this.passThroughBehavior = Objects.requireNonNullElse(passThroughBehavior, PassThroughBehavior.NONE);
   }

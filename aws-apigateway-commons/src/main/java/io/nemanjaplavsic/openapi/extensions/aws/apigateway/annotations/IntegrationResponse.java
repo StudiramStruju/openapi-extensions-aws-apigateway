@@ -2,15 +2,12 @@ package io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations;
 
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ContentHandling;
 
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
  * Represents x-amazon-apigateway-integration.response extension
  */
-@Target({ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IntegrationResponse {
 
@@ -45,7 +42,7 @@ public @interface IntegrationResponse {
   /**
    * Specifies mappings from integration method response parameters to method response parameters. Only the header and body types of the integration response parameters can be mapped to the header type of the method response.
    */
-  IntegrationResponseParameters responseParameters() default @IntegrationResponseParameters;
+  IntegrationResponseParameters parameters() default @IntegrationResponseParameters;
 
   /**
    * Response payload encoding conversion types. Valid values are 1) CONVERT_TO_TEXT, for converting a binary payload into a base64-encoded string or converting a text payload into a utf-8-encoded string or passing through the text payload natively without modification, and 2) CONVERT_TO_BINARY, for converting a text payload into a base64-decoded blob or passing through a binary payload natively without modification.

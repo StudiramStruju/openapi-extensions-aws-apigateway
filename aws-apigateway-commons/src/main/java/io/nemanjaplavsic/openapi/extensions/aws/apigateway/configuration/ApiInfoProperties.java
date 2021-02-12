@@ -3,12 +3,14 @@ package io.nemanjaplavsic.openapi.extensions.aws.apigateway.configuration;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.lang.Nullable;
 
 @Getter
 @EqualsAndHashCode
 @ToString
+@ConfigurationProperties(prefix = "openapi.api-info")
 public class ApiInfoProperties {
   @Nullable
   private final String host;

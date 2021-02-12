@@ -83,36 +83,6 @@ public @interface ApiGatewayIntegration {
   PassThroughBehavior passthroughBehavior() default PassThroughBehavior.NONE;
 
   /**
-   * For REST APIs, the value is typically a predefined method request parameter of the
-   * method.request.<param-type>.<param-name> format, where <param-type> can be:
-   * <ul>
-   *     <li>querystring</li>
-   *     <li>path</li>
-   *     <li>header</li>
-   *     <li>body</li>
-   * </ul>
-   * However,
-   * <ul>
-   *     <li>$context.VARIABLE_NAME</li>
-   *     <li>$stageVariables.VARIABLE_NAME</li>
-   *     <li>STATIC_VALUE</li>
-   * </ul>
-   * are also valid. For the body parameter, the <param-name> is a JSON path expression without the $. prefix.
-   */
-  IntegrationRequestParameters requestParameters() default @IntegrationRequestParameters;
-
-  /**
-   * Mapping templates for a request payload of specified MIME types.
-   */
-  IntegrationRequestTemplates requestTemplates() default @IntegrationRequestTemplates;
-
-  /**
-   * Defines the method's responses and specifies desired parameter mappings or
-   * payload mappings from integration responses to method responses.
-   */
-  IntegrationResponses responses() default @IntegrationResponses;
-
-  /**
    * Integration timeouts between 50 ms and 29,000 ms.
    */
   int timeoutInMillis() default 29000;
@@ -134,7 +104,7 @@ public @interface ApiGatewayIntegration {
   /**
    * Specifies the TLS configuration for an integration.
    */
-  IntegrationTlsConfig tlsConfig() default @IntegrationTlsConfig;
+/*  IntegrationTlsConfig tlsConfig() default @IntegrationTlsConfig;*/
 
   /**
    * The endpoint URI of the backend. For integrations of the aws type, this is an ARN value.

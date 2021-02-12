@@ -13,6 +13,9 @@ public class IntegrationIntegrationTypeExtension implements IntegrationExtension
 
   private IntegrationType integrationType;
 
+  public IntegrationIntegrationTypeExtension() {
+  }
+
   public IntegrationIntegrationTypeExtension(IntegrationType integrationType) {
     this.integrationType = integrationType;
   }

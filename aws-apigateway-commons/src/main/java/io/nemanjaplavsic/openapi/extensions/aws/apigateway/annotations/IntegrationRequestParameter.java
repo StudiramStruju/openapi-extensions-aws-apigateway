@@ -4,12 +4,9 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.Integrati
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.MethodRequestParameterType;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.RequestParameterSource;
 
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
-@Target({ElementType.ANNOTATION_TYPE, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IntegrationRequestParameter {
 
@@ -39,7 +36,7 @@ public @interface IntegrationRequestParameter {
    * <p>
    *  method.response.<b>{type}</b>.{name}</li>
    */
-  MethodRequestParameterType methodRequestParamType() default MethodRequestParameterType.NONE;
+  MethodRequestParameterType methodParameterType() default MethodRequestParameterType.NONE;
 
 
   String methodParameterName() default "";

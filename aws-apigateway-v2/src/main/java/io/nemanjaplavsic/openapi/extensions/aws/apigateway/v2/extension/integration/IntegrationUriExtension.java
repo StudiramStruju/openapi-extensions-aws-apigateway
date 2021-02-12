@@ -12,6 +12,9 @@ public class IntegrationUriExtension implements IntegrationExtension<StringVendo
 
   private String uri;
 
+  public IntegrationUriExtension() {
+  }
+
   public IntegrationUriExtension(String uri) {
     this.uri = uri;
   }

@@ -12,6 +12,9 @@ public class IntegrationCredentialsExtension implements IntegrationExtension<Str
 
   private String credentials;
 
+  public IntegrationCredentialsExtension() {
+  }
+
   public IntegrationCredentialsExtension(String credentials) {
     this.credentials = Objects.requireNonNull(credentials);
   }
