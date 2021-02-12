@@ -12,6 +12,9 @@ public class IntegrationConnectionIdExtension implements IntegrationExtension<St
 
   private String connectionId;
 
+  public IntegrationConnectionIdExtension() {
+  }
+
   public IntegrationConnectionIdExtension(String connectionId) {
     this.connectionId = connectionId;
   }

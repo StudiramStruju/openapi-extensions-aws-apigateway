@@ -13,6 +13,9 @@ public class IntegrationConnectionTypeExtension implements IntegrationExtension<
 
   private ConnectionType connectionType;
 
+  public IntegrationConnectionTypeExtension() {
+  }
+
   public IntegrationConnectionTypeExtension(@Nullable ConnectionType connectionType) {
     this.connectionType = Objects.requireNonNullElse(connectionType, ConnectionType.NONE);
   }

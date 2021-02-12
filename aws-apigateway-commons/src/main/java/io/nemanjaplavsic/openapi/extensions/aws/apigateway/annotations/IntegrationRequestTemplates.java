@@ -5,7 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
+/**
+ * Mapping templates for a request payload of specified MIME types.
+ */
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IntegrationRequestTemplates {
   IntegrationRequestTemplate[] value() default {};

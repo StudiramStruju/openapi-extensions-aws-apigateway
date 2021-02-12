@@ -25,6 +25,13 @@ public class IntegrationRequestParameterExtension implements IntegrationExtensio
   @Nullable
   private String staticValueName;
 
+  public IntegrationRequestParameterExtension() {
+    source = null;
+    integrationParameterType = null;
+    integrationParameterName = null;
+    methodParameterType = null;
+  }
+
   public IntegrationRequestParameterExtension(RequestParameterSource source,
                                               IntegrationRequestParameterType integrationParameterType,
                                               String integrationParameterName,

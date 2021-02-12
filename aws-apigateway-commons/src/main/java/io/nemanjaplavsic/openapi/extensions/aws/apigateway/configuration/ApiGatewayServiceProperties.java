@@ -6,14 +6,17 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.PassThrou
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.lang.Nullable;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @EqualsAndHashCode
 @ToString
+@ConfigurationProperties(prefix = "openapi.extension.aws.api-gateway.service")
 public class ApiGatewayServiceProperties {
   @Nullable
   private final String uri;
@@ -24,7 +27,7 @@ public class ApiGatewayServiceProperties {
   @Nullable
   private final ConnectionType connectionType;
   @Nullable
-  private final String[] cacheKeyParameters;
+  private final Set<String> cacheKeyParameters;
   @Nullable
   private final String cacheNamespace;
   @Nullable
@@ -39,7 +42,7 @@ public class ApiGatewayServiceProperties {
                                      @Nullable String basePath,
                                      @Nullable String connectionId,
                                      @Nullable ConnectionType connectionType,
-                                     @Nullable String[] cacheKeyParameters,
+                                     @Nullable Set<String> cacheKeyParameters,
                                      @Nullable String cacheNamespace,
                                      @Nullable String credentials,
                                      @Nullable ContentHandling contentHandling,

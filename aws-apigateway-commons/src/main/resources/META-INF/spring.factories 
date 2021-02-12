@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.configuration.PropertySourceLoader
+

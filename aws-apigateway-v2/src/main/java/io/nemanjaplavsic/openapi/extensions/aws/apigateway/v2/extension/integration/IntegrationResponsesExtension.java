@@ -36,7 +36,7 @@ public class IntegrationResponsesExtension implements IntegrationExtension<Objec
     return this;
   }
 
-  public IntegrationResponsesExtension response(List<IntegrationResponseExtension> responses) {
+  public IntegrationResponsesExtension responses(List<IntegrationResponseExtension> responses) {
     responses.forEach(this::response);
     return this;
   }

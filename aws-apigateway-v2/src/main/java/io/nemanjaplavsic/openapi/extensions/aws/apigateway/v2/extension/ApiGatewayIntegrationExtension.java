@@ -6,6 +6,7 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integrat
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationConnectionTypeExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationContentHandlingExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationCredentialsExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationHttpMethodExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationIntegrationTypeExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationPassThroughBehaviorExtension;
@@ -15,7 +16,9 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integrat
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationTimeoutInMillisExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationUriExtension;
 import springfox.documentation.service.ObjectVendorExtension;
+import springfox.documentation.service.VendorExtension;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -53,20 +56,20 @@ public class ApiGatewayIntegrationExtension implements ApiGatewayExtension<Objec
                                         IntegrationTimeoutInMillisExtension timeoutInMillis,
                                         IntegrationIntegrationTypeExtension type,
                                         IntegrationUriExtension uri) {
-    this.cacheKeyParameters = cacheKeyParameters;
-    this.cacheNamespace = cacheNamespace;
-    this.connectionId = connectionId;
-    this.connectionType = connectionType;
-    this.credentials = credentials;
-    this.contentHandling = contentHandling;
-    this.httpMethod = httpMethod;
-    this.passthroughBehavior = passthroughBehavior;
-    this.requestParameters = requestParameters;
-    this.requestTemplates = requestTemplates;
-    this.responses = responses;
-    this.timeoutInMillis = timeoutInMillis;
-    this.type = type;
-    this.uri = uri;
+    this.cacheKeyParameters = Objects.requireNonNullElse(cacheKeyParameters, new IntegrationCacheKeyParametersExtension());
+    this.cacheNamespace = Objects.requireNonNullElse(cacheNamespace, new IntegrationCacheNamespaceExtension());
+    this.connectionId = Objects.requireNonNullElse(connectionId, new IntegrationConnectionIdExtension());
+    this.connectionType = Objects.requireNonNullElse(connectionType, new IntegrationConnectionTypeExtension());
+    this.credentials = Objects.requireNonNullElse(credentials, new IntegrationCredentialsExtension());
+    this.contentHandling = Objects.requireNonNullElse(contentHandling, new IntegrationContentHandlingExtension());
+    this.httpMethod = Objects.requireNonNullElse(httpMethod, new IntegrationHttpMethodExtension());
+    this.passthroughBehavior = Objects.requireNonNullElse(passthroughBehavior, new IntegrationPassThroughBehaviorExtension());
+    this.requestParameters = Objects.requireNonNullElse(requestParameters, new IntegrationRequestParametersExtension());
+    this.requestTemplates = Objects.requireNonNullElse(requestTemplates, new IntegrationRequestTemplatesExtension());
+    this.responses = Objects.requireNonNullElse(responses, new IntegrationResponsesExtension());
+    this.timeoutInMillis = Objects.requireNonNullElse(timeoutInMillis, new IntegrationTimeoutInMillisExtension());
+    this.type = Objects.requireNonNullElse(type, new IntegrationIntegrationTypeExtension());
+    this.uri = Objects.requireNonNullElse(uri, new IntegrationUriExtension());
   }
 
   public static Builder builder() {
@@ -245,10 +248,33 @@ public class ApiGatewayIntegrationExtension implements ApiGatewayExtension<Objec
     return Objects.hash(cacheKeyParameters, cacheNamespace, connectionId, connectionType, credentials, contentHandling, httpMethod, passthroughBehavior, requestParameters, requestTemplates, responses, timeoutInMillis, type, uri);
   }
 
+  public List<IntegrationExtension> getAllProperties() {
+    return List.of(
+        cacheKeyParameters,
+        cacheNamespace,
+        connectionId,
+        connectionType,
+        credentials,
+        contentHandling,
+        httpMethod,
+        passthroughBehavior,
+        requestParameters,
+        requestTemplates,
+        responses,
+        timeoutInMillis,
+        type,
+        uri
+    );
+  }
+
   @Override
   public ObjectVendorExtension toVendorExtension() {
     final ObjectVendorExtension extension = new ObjectVendorExtension(NAME);
-
+    getAllProperties()
+        .stream()
+        .filter(IntegrationExtension<VendorExtension<?>>::isValid)
+        .map(IntegrationExtension<VendorExtension<?>>::toVendorExtension)
+        .forEach(extension::addProperty);
     return extension;
   }
 

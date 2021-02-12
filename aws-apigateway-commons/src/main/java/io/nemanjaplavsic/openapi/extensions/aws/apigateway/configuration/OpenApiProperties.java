@@ -16,7 +16,6 @@ public class OpenApiProperties {
   private final ApiInfoProperties apiInfo;
   private final ExtensionProperties extension;
 
-
   @ConstructorBinding
   public OpenApiProperties(boolean enabled, ApiInfoProperties apiInfo, ExtensionProperties extension) {
     this.enabled = enabled;

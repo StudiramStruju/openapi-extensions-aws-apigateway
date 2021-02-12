@@ -49,6 +49,7 @@ public class IntegrationResponseTemplatesExtension implements IntegrationExtensi
   public ObjectVendorExtension toVendorExtension() {
     ObjectVendorExtension extension = new ObjectVendorExtension(NAME);
     templates.stream()
+        .filter(IntegrationResponseTemplateExtension::isValid)
         .map(IntegrationResponseTemplateExtension::toVendorExtension)
         .forEach(extension::addProperty);
     return extension;

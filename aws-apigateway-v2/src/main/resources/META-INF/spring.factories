@@ -1,2 +1,7 @@
-#org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-#  ApiGwExtProperties
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.resolver.integration.IntegrationCacheKeyParametersResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.resolver.integration.IntegrationRequestParametersResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.resolver.integration.IntegrationResponsesResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.resolver.integration.IntegrationUriExtensionResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.resolver.ApiGatewayIntegrationExtensionResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.ApiGatewayExtensionOperationPlugin

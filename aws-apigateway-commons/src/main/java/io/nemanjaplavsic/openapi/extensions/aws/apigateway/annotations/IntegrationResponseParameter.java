@@ -1,19 +1,21 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations;
 
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationResponseParameterType;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ResponseParameterSource;
 
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
-@Target({ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IntegrationResponseParameter {
 
+  ResponseParameterSource source();
+
   String methodHeaderName();
 
-  IntegrationResponseParameterType integrationResponseParamType();
+  IntegrationResponseParameterType integrationParameterType() default IntegrationResponseParameterType.NONE;
 
-  String integrationResponseParamName();
+  String staticValue() default "";
+
+  String integrationParameterName() default  "";
 }
