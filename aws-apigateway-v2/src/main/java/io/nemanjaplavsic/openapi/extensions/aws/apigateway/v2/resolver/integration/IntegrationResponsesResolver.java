@@ -5,17 +5,18 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations.Integrati
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations.IntegrationResponseTemplate;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations.IntegrationResponses;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationResponseParameterType;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationResponseExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationResponseParameterExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationResponseParametersExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationResponseTemplateExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationResponseTemplatesExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ResponseParameterSource;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationResponsesExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationStatusCodeExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.response.IntegrationResponseExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.response.IntegrationResponseParameterExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.response.IntegrationResponseParametersExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.response.IntegrationResponseTemplateExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.response.IntegrationResponseTemplatesExtension;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ResponseHeader;
-import org.springframework.http.MediaType;
+import org.springframework.http.InvalidMediaTypeException;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import springfox.documentation.service.Header;
 import springfox.documentation.service.ResponseMessage;
@@ -62,79 +63,79 @@ public class IntegrationResponsesResolver implements IntegrationResolver<Integra
   }
 
   public IntegrationResponseExtension from(ResponseMessage message) {
-    IntegrationResponseExtension extension = new IntegrationResponseExtension();
-
     // Resolve parameters
     final List<IntegrationResponseParameterExtension> parameters = message.getHeaders().entrySet().stream()
         .map(entry -> resolveParameterFromHeader(entry.getKey(), entry.getValue()))
+        .filter(Objects::nonNull)
         .collect(Collectors.toList());
 
-    return extension.statusCode(message.getCode())
-        .responseStatusPattern(String.valueOf(message.getCode()))
+    return new IntegrationResponseExtension(String.valueOf(message.getCode()), message.getCode())
         .parameters(new IntegrationResponseParametersExtension(parameters));
   }
 
   public IntegrationResponseExtension from(ApiResponse apiResponse) {
-    IntegrationResponseExtension extension = new IntegrationResponseExtension();
-
     final List<IntegrationResponseParameterExtension> parameters = Arrays.stream(apiResponse.responseHeaders())
         .map(this::resolveParameterFromHeader)
+        .filter(Objects::nonNull)
         .collect(Collectors.toList());
 
-    return extension.responseStatusPattern(String.valueOf(apiResponse.code()))
-        .statusCode(apiResponse.code())
+    return new IntegrationResponseExtension(String.valueOf(apiResponse.code()), apiResponse.code())
         .parameters(new IntegrationResponseParametersExtension(parameters));
   }
 
   public IntegrationResponseExtension from(IntegrationResponse integrationResponse) {
     final List<IntegrationResponseParameterExtension> parameters = Arrays.stream(integrationResponse.parameters().value())
         .map(this::resolveParameter)
+        .filter(Objects::nonNull)
         .collect(Collectors.toList());
 
     final List<IntegrationResponseTemplateExtension> templates = Arrays.stream(integrationResponse.templates().value())
         .map(this::resolveTemplates)
+        .filter(Objects::nonNull)
         .collect(Collectors.toList());
 
 
-    return IntegrationResponseExtension.builder()
-        .responseStatusPattern(integrationResponse.responseStatusPattern())
-        .statusCode(new IntegrationStatusCodeExtension(integrationResponse.statusCode()))
+    return new IntegrationResponseExtension(integrationResponse.responseStatusPattern(), integrationResponse.statusCode())
         .contentHandling(integrationResponse.contentHandling())
         .parameters(new IntegrationResponseParametersExtension(parameters))
-        .templates(new IntegrationResponseTemplatesExtension(templates))
-        .build();
+        .templates(new IntegrationResponseTemplatesExtension(templates));
   }
 
+  @Nullable
   public IntegrationResponseParameterExtension resolveParameterFromHeader(String name, Header header) {
     final String headerName = getFirstNonEmptyValue(name, header.getName());
-    return IntegrationResponseParameterExtension.builder()
+    if (Objects.isNull(headerName)) {
+      return null;
+    }
+    return new IntegrationResponseParameterExtension(ResponseParameterSource.INTEGRATION, headerName)
         .integrationParameterType(IntegrationResponseParameterType.HEADER)
-        .integrationParameterName(headerName)
-        .methodHeaderName(headerName)
-        .build();
+        .integrationParameterName(headerName);
   }
 
+  @Nullable
   public IntegrationResponseParameterExtension resolveParameterFromHeader(ResponseHeader header) {
     final String headerName = getFirstNonEmptyValue(header.name());
-    return IntegrationResponseParameterExtension.builder()
+    if (Objects.isNull(headerName)) {
+      return null;
+    }
+    return new IntegrationResponseParameterExtension(ResponseParameterSource.INTEGRATION, headerName)
         .integrationParameterType(IntegrationResponseParameterType.HEADER)
-        .integrationParameterName(headerName)
-        .methodHeaderName(headerName)
-        .build();
+        .integrationParameterName(headerName);
   }
 
   public IntegrationResponseParameterExtension resolveParameter(IntegrationResponseParameter parameter) {
-    return IntegrationResponseParameterExtension.builder()
+   return new IntegrationResponseParameterExtension(parameter.source(), parameter.methodHeaderName())
         .integrationParameterType(parameter.integrationParameterType())
         .integrationParameterName(parameter.integrationParameterName())
-        .methodHeaderName(parameter.methodHeaderName())
-        .build();
+        .staticValue(parameter.staticValue());
   }
 
+  @Nullable
   public IntegrationResponseTemplateExtension resolveTemplates(IntegrationResponseTemplate templates) {
-    return IntegrationResponseTemplateExtension.builder()
-        .mediaType(MediaType.valueOf(templates.mediaType()))
-        .template(templates.template())
-        .build();
+    try {
+      return new IntegrationResponseTemplateExtension(templates.mediaType(), templates.template());
+    } catch (InvalidMediaTypeException e) {
+      return null;
+    }
   }
 }

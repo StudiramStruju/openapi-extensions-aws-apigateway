@@ -1,9 +1,10 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.request;
 
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationRequestParameterType;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.MethodRequestParameterType;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.RequestParameterSource;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.exception.IntegrationExtensionException;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import springfox.documentation.service.StringVendorExtension;
@@ -14,9 +15,9 @@ import java.util.StringJoiner;
 @Slf4j
 public class IntegrationRequestParameterExtension implements IntegrationExtension<StringVendorExtension> {
 
-  private RequestParameterSource source;
-  private IntegrationRequestParameterType integrationParameterType;
-  private String integrationParameterName;
+  private final RequestParameterSource source;
+  private final IntegrationRequestParameterType integrationParameterType;
+  private final String integrationParameterName;
   private MethodRequestParameterType methodParameterType;
   @Nullable
   private String methodParameterName;
@@ -27,11 +28,10 @@ public class IntegrationRequestParameterExtension implements IntegrationExtensio
   @Nullable
   private String staticValueName;
 
-  public IntegrationRequestParameterExtension() {
-    source = null;
-    integrationParameterType = null;
-    integrationParameterName = null;
-    methodParameterType = null;
+  public IntegrationRequestParameterExtension(RequestParameterSource source,
+                                              IntegrationRequestParameterType integrationParameterType,
+                                              String integrationParameterName) {
+    this(source, integrationParameterType, integrationParameterName, null, null, null, null, null);
   }
 
   public IntegrationRequestParameterExtension(RequestParameterSource source,
@@ -42,33 +42,14 @@ public class IntegrationRequestParameterExtension implements IntegrationExtensio
                                               @Nullable String contextVariableName,
                                               @Nullable String stageVariableName,
                                               @Nullable String staticValueName) {
-    this.source = source;
-    this.integrationParameterType = integrationParameterType;
-    this.integrationParameterName = integrationParameterName;
+    this.source = Objects.requireNonNull(source, "Cannot create instance of IntegrationRequestParameterExtension with source as null value!");
+    this.integrationParameterType = Objects.requireNonNull(integrationParameterType, "Cannot create instance of IntegrationRequestParameterExtension with integrationParameterType as null value!");
+    this.integrationParameterName = Objects.requireNonNull(integrationParameterName, "Cannot create instance of IntegrationRequestParameterExtension with integrationParameterName as null value!");
     this.methodParameterType = Objects.requireNonNullElse(methodParameterType, MethodRequestParameterType.NONE);
     this.methodParameterName = methodParameterName;
     this.contextVariableName = contextVariableName;
     this.stageVariableName = stageVariableName;
     this.staticValueName = staticValueName;
-  }
-
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  public IntegrationRequestParameterExtension source(RequestParameterSource source) {
-    this.source = source;
-    return this;
-  }
-
-  public IntegrationRequestParameterExtension integrationParameterType(IntegrationRequestParameterType integrationParameterType) {
-    this.integrationParameterType = integrationParameterType;
-    return this;
-  }
-
-  public IntegrationRequestParameterExtension integrationParameterName(String integrationParameterName) {
-    this.integrationParameterName = integrationParameterName;
-    return this;
   }
 
   public IntegrationRequestParameterExtension methodParameterType(MethodRequestParameterType methodParameterType) {
@@ -133,20 +114,8 @@ public class IntegrationRequestParameterExtension implements IntegrationExtensio
   }
 
   public boolean matches(IntegrationRequestParameterExtension parameterExtension) {
-    if (isValid()) {
-      return integrationParameterType.equals(parameterExtension.integrationParameterType())
-          && integrationParameterName.equals(parameterExtension.integrationParameterName());
-    }
-    return false;
-  }
-
-  public IntegrationRequestParameterExtension update(IntegrationRequestParameterExtension requestParameter) {
-    return this.source(requestParameter.source())
-        .methodParameterType(requestParameter.methodParameterType())
-        .methodParameterName(requestParameter.methodParameterName())
-        .contextVariableName(requestParameter.contextVariableName())
-        .stageVariableName(requestParameter.stageVariableName())
-        .staticValueName(requestParameter.staticValueName());
+    return integrationParameterType.equals(parameterExtension.integrationParameterType())
+        && integrationParameterName.equals(parameterExtension.integrationParameterName());
   }
 
   @Override
@@ -246,63 +215,5 @@ public class IntegrationRequestParameterExtension implements IntegrationExtensio
         .add("stageVariableName='" + stageVariableName + "'")
         .add("staticValueName='" + staticValueName + "'")
         .toString();
-  }
-
-  public static class Builder {
-    private RequestParameterSource source;
-    private IntegrationRequestParameterType integrationParameterType;
-    private String integrationParameterName;
-    private MethodRequestParameterType methodParameterType;
-    private String methodParameterName;
-    private String contextVariableName;
-    private String stageVariableName;
-    private String staticValueName;
-
-    Builder() {
-    }
-
-    public Builder source(RequestParameterSource source) {
-      this.source = source;
-      return this;
-    }
-
-    public Builder integrationParameterType(IntegrationRequestParameterType integrationParameterType) {
-      this.integrationParameterType = integrationParameterType;
-      return this;
-    }
-
-    public Builder integrationParameterName(String integrationParameterName) {
-      this.integrationParameterName = integrationParameterName;
-      return this;
-    }
-
-    public Builder methodParameterType(MethodRequestParameterType methodParameterType) {
-      this.methodParameterType = methodParameterType;
-      return this;
-    }
-
-    public Builder methodParameterName(String methodParameterName) {
-      this.methodParameterName = methodParameterName;
-      return this;
-    }
-
-    public Builder contextVariableName(String contextVariableName) {
-      this.contextVariableName = contextVariableName;
-      return this;
-    }
-
-    public Builder stageVariableName(String stageVariableName) {
-      this.stageVariableName = stageVariableName;
-      return this;
-    }
-
-    public Builder staticValueName(String staticValueName) {
-      this.staticValueName = staticValueName;
-      return this;
-    }
-
-    public IntegrationRequestParameterExtension build() {
-      return new IntegrationRequestParameterExtension(source, integrationParameterType, integrationParameterName, methodParameterType, methodParameterName, contextVariableName, stageVariableName, staticValueName);
-    }
   }
 }

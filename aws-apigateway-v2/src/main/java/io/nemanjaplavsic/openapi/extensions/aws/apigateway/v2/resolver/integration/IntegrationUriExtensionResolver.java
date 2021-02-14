@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import springfox.documentation.spi.service.contexts.OperationContext;
 
-import java.util.Objects;
-
 @Component
 @RequiredArgsConstructor
 @EnableConfigurationProperties(ApiGatewayServiceProperties.class)
@@ -24,41 +22,45 @@ public class IntegrationUriExtensionResolver implements IntegrationResolver<Inte
         .transform(ApiGatewayIntegration::uri)
         .orNull();
 
-    if (StringUtils.hasText(annotationUri)) {
-      return IntegrationUriExtension.builder()
-          .uri(normalizeUri(annotationUri) + context.requestMappingPattern())
-          .build();
-    }
+    final String uri = resolveUri(annotationUri, context);
+    return new IntegrationUriExtension(uri);
+  }
 
-    return IntegrationUriExtension.builder()
-        .uri(getUri() + getBasePath() +context.requestMappingPattern())
-        .build();
+  public String resolveUri(String annotationUri, OperationContext context) {
+    if (StringUtils.hasText(annotationUri)) {
+      return normalizeFrontSlash(annotationUri) + context.requestMappingPattern();
+    }
+    return getUri() + getBasePath() + context.requestMappingPattern();
   }
 
   public String getBasePath() {
-   return normalizeBasePath(properties.getBasePath());
+    return normalizeBackSlash(properties.getBasePath());
   }
 
   public String getUri() {
     final String uri = properties.getUri();
-    return normalizeUri(uri);
+    return normalizeFrontSlash(uri);
   }
 
-  public String normalizeBasePath(String basePath) {
-    if (Objects.nonNull(basePath)) {
+  public String normalizeBackSlash(String basePath) {
+    if (StringUtils.hasText(basePath)) {
       if (basePath.startsWith("/")) {
         return basePath;
       } else {
         return "/" + basePath;
       }
     }
-    return Objects.requireNonNullElse(basePath, "");
+    return "";
   }
 
-  public String normalizeUri(String uri) {
-    if (Objects.nonNull(uri) && uri.endsWith("/")) {
-      return uri.substring(uri.length() - 1);
+  public String normalizeFrontSlash(String uri) {
+    if (StringUtils.hasText(uri)) {
+      if (uri.endsWith("/")) {
+        return uri.substring(uri.length() - 1);
+      }
+      return uri;
     }
-    return Objects.requireNonNullElse(uri, "");
+    return "";
   }
+
 }

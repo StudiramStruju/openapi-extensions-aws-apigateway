@@ -1,9 +1,9 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.request.IntegrationRequestTemplateExtension;
 import springfox.documentation.service.ObjectVendorExtension;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -22,17 +22,16 @@ public class IntegrationRequestTemplatesExtension implements IntegrationExtensio
     this.templates = Objects.requireNonNullElse(templates, new ArrayList<>());
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
   public IntegrationRequestTemplatesExtension template(IntegrationRequestTemplateExtension template) {
-    templates.stream()
-        .filter(existing -> existing.matches(template))
-        .findFirst()
-        .ifPresentOrElse(
-            existing -> existing.update(template),
-            () -> templates.add(template));
+    if (template.isValid()) {
+      templates.stream()
+          .filter(IntegrationRequestTemplateExtension::isValid)
+          .filter(existing -> existing.matches(template))
+          .findFirst()
+          .ifPresentOrElse(
+              existing -> existing = template,
+              () -> templates.add(template));
+    }
     return this;
   }
 
@@ -78,31 +77,5 @@ public class IntegrationRequestTemplatesExtension implements IntegrationExtensio
     return new StringJoiner(", ", IntegrationRequestTemplatesExtension.class.getSimpleName() + "[", "]")
         .add("templates=" + templates)
         .toString();
-  }
-
-  public static class Builder {
-    private final ArrayList<IntegrationRequestTemplateExtension> templates = new ArrayList<>();
-
-    Builder() {
-    }
-
-    public Builder template(IntegrationRequestTemplateExtension template) {
-      this.templates.add(template);
-      return this;
-    }
-
-    public Builder templates(Collection<? extends IntegrationRequestTemplateExtension> templates) {
-      this.templates.addAll(templates);
-      return this;
-    }
-
-    public Builder clearTemplates() {
-      this.templates.clear();
-      return this;
-    }
-
-    public IntegrationRequestTemplatesExtension build() {
-      return new IntegrationRequestTemplatesExtension(templates);
-    }
   }
 }

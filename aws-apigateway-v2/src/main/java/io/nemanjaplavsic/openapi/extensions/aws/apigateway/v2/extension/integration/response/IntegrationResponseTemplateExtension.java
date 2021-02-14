@@ -1,5 +1,7 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.response;
 
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationExtension;
+import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import springfox.documentation.service.StringVendorExtension;
@@ -9,31 +11,17 @@ import java.util.StringJoiner;
 
 public class IntegrationResponseTemplateExtension implements IntegrationExtension<StringVendorExtension> {
 
-  private MediaType mediaType;
-  private String template;
+
+  private final MediaType mediaType;
+  private final String template;
+
+  public IntegrationResponseTemplateExtension(String mediaType, String template) throws InvalidMediaTypeException {
+    this(MediaType.parseMediaType(mediaType), template);
+  }
 
   public IntegrationResponseTemplateExtension(MediaType mediaType, String template) {
-    this.mediaType = mediaType;
-    this.template = template;
-  }
-
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  public IntegrationResponseTemplateExtension mediaType(String mediaType) {
-    this.mediaType = MediaType.parseMediaType(mediaType);
-    return this;
-  }
-
-  public IntegrationResponseTemplateExtension mediaType(MediaType mediaType) {
-    this.mediaType = mediaType;
-    return this;
-  }
-
-  public IntegrationResponseTemplateExtension template(String template) {
-    this.template = template;
-    return this;
+    this.mediaType = Objects.requireNonNull(mediaType);
+    this.template = Objects.requireNonNullElse(template, "$input.json('$')");
   }
 
   public MediaType mediaType() {
@@ -45,11 +33,7 @@ public class IntegrationResponseTemplateExtension implements IntegrationExtensio
   }
 
   public boolean matches(IntegrationResponseTemplateExtension template) {
-    return mediaType.equals(template.mediaType());
-  }
-
-  public IntegrationResponseTemplateExtension update(IntegrationResponseTemplateExtension template) {
-    return this.template(template.template());
+    return Objects.equals(mediaType, template.mediaType());
   }
 
   @Override
@@ -74,7 +58,7 @@ public class IntegrationResponseTemplateExtension implements IntegrationExtensio
     if (!(object instanceof IntegrationResponseTemplateExtension)) return false;
     IntegrationResponseTemplateExtension that = (IntegrationResponseTemplateExtension) object;
     return mediaType.equals(that.mediaType) &&
-        template.equals(that.template);
+        Objects.equals(template, that.template);
   }
 
   @Override
@@ -88,27 +72,5 @@ public class IntegrationResponseTemplateExtension implements IntegrationExtensio
         .add("mediaType=" + mediaType)
         .add("template='" + template + "'")
         .toString();
-  }
-
-  public static class Builder {
-    private MediaType mediaType;
-    private String template;
-
-    Builder() {
-    }
-
-    public Builder mediaType(MediaType mediaType) {
-      this.mediaType = mediaType;
-      return this;
-    }
-
-    public Builder template(String template) {
-      this.template = template;
-      return this;
-    }
-
-    public IntegrationResponseTemplateExtension build() {
-      return new IntegrationResponseTemplateExtension(mediaType, template);
-    }
   }
 }

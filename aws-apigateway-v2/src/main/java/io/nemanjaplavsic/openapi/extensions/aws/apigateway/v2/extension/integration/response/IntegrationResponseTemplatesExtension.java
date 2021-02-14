@@ -1,9 +1,10 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.response;
 
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationExtension;
+import org.springframework.lang.Nullable;
 import springfox.documentation.service.ObjectVendorExtension;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -15,24 +16,26 @@ public class IntegrationResponseTemplatesExtension implements IntegrationExtensi
   private final List<IntegrationResponseTemplateExtension> templates;
 
   public IntegrationResponseTemplatesExtension() {
-    this.templates = new ArrayList<>();
+    this(null);
   }
 
-  public IntegrationResponseTemplatesExtension(List<IntegrationResponseTemplateExtension> templates) {
+  public IntegrationResponseTemplatesExtension(@Nullable List<IntegrationResponseTemplateExtension> templates) {
     this.templates = Objects.requireNonNullElse(templates, new ArrayList<>());
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
   public IntegrationResponseTemplatesExtension template(IntegrationResponseTemplateExtension template) {
-    templates.stream()
-        .filter(existing -> existing.matches(template))
-        .findFirst()
-        .ifPresentOrElse(
-            existing -> existing.update(template),
-            () -> templates.add(template));
+    if (template.isValid()) {
+      templates.stream()
+          .filter(IntegrationResponseTemplateExtension::isValid)
+          .filter(existing -> existing.matches(template))
+          .findFirst()
+          .ifPresentOrElse(
+              existing -> {
+                templates.remove(existing);
+                templates.add(template);
+              },
+              () -> templates.add(template));
+    }
     return this;
   }
 
@@ -83,31 +86,5 @@ public class IntegrationResponseTemplatesExtension implements IntegrationExtensi
     return new StringJoiner(", ", IntegrationResponseTemplatesExtension.class.getSimpleName() + "[", "]")
         .add("templates=" + templates)
         .toString();
-  }
-
-  public static class Builder {
-    private final ArrayList<IntegrationResponseTemplateExtension> templates = new ArrayList<>();
-
-    Builder() {
-    }
-
-    public Builder template(IntegrationResponseTemplateExtension template) {
-      this.templates.add(template);
-      return this;
-    }
-
-    public Builder templates(Collection<? extends IntegrationResponseTemplateExtension> templates) {
-      this.templates.addAll(templates);
-      return this;
-    }
-
-    public Builder clearTemplates() {
-      this.templates.clear();
-      return this;
-    }
-
-    public IntegrationResponseTemplatesExtension build() {
-      return new IntegrationResponseTemplatesExtension(templates);
-    }
   }
 }

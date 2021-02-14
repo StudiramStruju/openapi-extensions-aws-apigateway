@@ -24,10 +24,6 @@ public class IntegrationCacheKeyParametersExtension implements IntegrationExtens
     this.cacheKeyParameters = Objects.requireNonNullElse(cacheKeyParameters, new HashSet<>());
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
   public IntegrationCacheKeyParametersExtension cacheKeyParameter(String parameter) {
     if (StringUtils.hasText(parameter))
       this.cacheKeyParameters.add(parameter);
@@ -76,27 +72,5 @@ public class IntegrationCacheKeyParametersExtension implements IntegrationExtens
     return new StringJoiner(", ", IntegrationCacheKeyParametersExtension.class.getSimpleName() + "[", "]")
         .add("cacheKeyParameters=" + cacheKeyParameters)
         .toString();
-  }
-
-  public static class Builder {
-    private final Set<String> cacheKeyParameters;
-
-    Builder() {
-      cacheKeyParameters = new HashSet<>();
-    }
-
-    public Builder cacheKeyParameters(Set<String> cacheKeyParameters) {
-      this.cacheKeyParameters.addAll(cacheKeyParameters);
-      return this;
-    }
-
-    public Builder cacheKeyParameter(String cacheKeyParameter) {
-      this.cacheKeyParameters.add(cacheKeyParameter);
-      return this;
-    }
-
-    public IntegrationCacheKeyParametersExtension build() {
-      return new IntegrationCacheKeyParametersExtension(cacheKeyParameters);
-    }
   }
 }

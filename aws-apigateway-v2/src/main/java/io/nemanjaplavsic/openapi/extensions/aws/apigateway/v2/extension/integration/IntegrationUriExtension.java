@@ -12,15 +12,8 @@ public class IntegrationUriExtension implements IntegrationExtension<StringVendo
 
   private String uri;
 
-  public IntegrationUriExtension() {
-  }
-
   public IntegrationUriExtension(String uri) {
     this.uri = uri;
-  }
-
-  public static Builder builder() {
-    return new Builder();
   }
 
   public IntegrationUriExtension uri(String uri) {
@@ -67,19 +60,4 @@ public class IntegrationUriExtension implements IntegrationExtension<StringVendo
         .toString();
   }
 
-  public static class Builder {
-    private String uri;
-
-    Builder() {
-    }
-
-    public Builder uri(String uri) {
-      this.uri = uri;
-      return this;
-    }
-
-    public IntegrationUriExtension build() {
-      return new IntegrationUriExtension(uri);
-    }
-  }
 }

@@ -1,5 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
+import org.springframework.lang.Nullable;
 import springfox.documentation.service.StringVendorExtension;
 
 import java.util.Objects;
@@ -13,17 +14,14 @@ public class IntegrationTimeoutInMillisExtension implements IntegrationExtension
   private Integer timeoutInMillis;
 
   public IntegrationTimeoutInMillisExtension() {
+    this(null);
   }
 
-  public IntegrationTimeoutInMillisExtension(Integer timeoutInMillis) {
+  public IntegrationTimeoutInMillisExtension(@Nullable Integer timeoutInMillis) {
     this.timeoutInMillis = Objects.requireNonNullElse(timeoutInMillis, DEFAULT);
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  public IntegrationTimeoutInMillisExtension timeoutInMillis(Integer timeoutInMillis) {
+  public IntegrationTimeoutInMillisExtension timeoutInMillis(@Nullable Integer timeoutInMillis) {
     this.timeoutInMillis = Objects.requireNonNullElse(timeoutInMillis, DEFAULT);
     return this;
   }
@@ -65,22 +63,5 @@ public class IntegrationTimeoutInMillisExtension implements IntegrationExtension
     return new StringJoiner(", ", IntegrationTimeoutInMillisExtension.class.getSimpleName() + "[", "]")
         .add("timeoutInMillis=" + timeoutInMillis)
         .toString();
-  }
-
-  public static class Builder {
-    private Integer timeoutInMillis;
-
-    Builder() {
-      timeoutInMillis = DEFAULT;
-    }
-
-    public Builder timeoutInMillis(Integer timeoutInMillis) {
-      this.timeoutInMillis = timeoutInMillis;
-      return this;
-    }
-
-    public IntegrationTimeoutInMillisExtension build() {
-      return new IntegrationTimeoutInMillisExtension(timeoutInMillis);
-    }
   }
 }

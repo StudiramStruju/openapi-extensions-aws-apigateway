@@ -1,5 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.response.IntegrationResponseExtension;
 import org.springframework.lang.Nullable;
 import springfox.documentation.service.ObjectVendorExtension;
 
@@ -15,7 +16,7 @@ public class IntegrationResponsesExtension implements IntegrationExtension<Objec
   private final List<IntegrationResponseExtension> responses;
 
   public IntegrationResponsesExtension() {
-    this.responses = new ArrayList<>();
+    this(null);
   }
 
   public IntegrationResponsesExtension(@Nullable List<IntegrationResponseExtension> responses) {
@@ -27,12 +28,15 @@ public class IntegrationResponsesExtension implements IntegrationExtension<Objec
   }
 
   public IntegrationResponsesExtension response(IntegrationResponseExtension responseExtension) {
-    responses.stream()
-        .filter(existing -> existing.matches(responseExtension))
-        .findFirst()
-        .ifPresentOrElse(
-            existing -> existing.update(responseExtension),
-            () -> responses.add(responseExtension));
+    if (responseExtension.isValid()) {
+      responses.stream()
+          .filter(IntegrationResponseExtension::isValid)
+          .filter(existing -> existing.matches(responseExtension))
+          .findFirst()
+          .ifPresentOrElse(
+              existing -> existing.update(responseExtension),
+              () -> responses.add(responseExtension));
+    }
     return this;
   }
 
@@ -48,7 +52,9 @@ public class IntegrationResponsesExtension implements IntegrationExtension<Objec
   @Override
   public ObjectVendorExtension toVendorExtension() {
     ObjectVendorExtension vendorExtension = new ObjectVendorExtension(NAME);
-    responses.forEach(response -> vendorExtension.addProperty(response.toVendorExtension()));
+    responses.stream()
+        .filter(IntegrationResponseExtension::isValid)
+        .forEach(response -> vendorExtension.addProperty(response.toVendorExtension()));
     return vendorExtension;
   }
 
