@@ -28,10 +28,7 @@ public class IntegrationCacheKeyParametersResolver implements IntegrationResolve
         .transform(value -> Set.copyOf(Arrays.asList(value)))
         .or(new HashSet<>());
 
-    extension.cacheKeyParameter(cacheKeyParameters);
-
-    return extension;
+    return extension.cacheKeyParameter(cacheKeyParameters);
   }
-
 
 }

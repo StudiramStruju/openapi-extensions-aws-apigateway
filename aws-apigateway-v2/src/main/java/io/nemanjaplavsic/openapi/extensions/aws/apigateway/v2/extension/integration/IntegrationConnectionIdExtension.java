@@ -1,5 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
+import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 import springfox.documentation.service.StringVendorExtension;
 
@@ -10,25 +11,14 @@ public class IntegrationConnectionIdExtension implements IntegrationExtension<St
 
   public static final String NAME = "connectionId";
 
-  private String connectionId;
-
-  public IntegrationConnectionIdExtension() {
-  }
+  @Nullable
+  private final String connectionId;
 
   public IntegrationConnectionIdExtension(String connectionId) {
     this.connectionId = connectionId;
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  public IntegrationConnectionIdExtension connectionId(String connectionId) {
-    if (StringUtils.hasText(connectionId))
-      this.connectionId = connectionId;
-    return this;
-  }
-
+  @Nullable
   public String connectionId() {
     return connectionId;
   }
@@ -53,7 +43,7 @@ public class IntegrationConnectionIdExtension implements IntegrationExtension<St
     if (this == object) return true;
     if (!(object instanceof IntegrationConnectionIdExtension)) return false;
     IntegrationConnectionIdExtension that = (IntegrationConnectionIdExtension) object;
-    return connectionId.equals(that.connectionId);
+    return Objects.equals(connectionId, that.connectionId);
   }
 
   @Override
@@ -66,21 +56,5 @@ public class IntegrationConnectionIdExtension implements IntegrationExtension<St
     return new StringJoiner(", ", IntegrationConnectionIdExtension.class.getSimpleName() + "[", "]")
         .add("connectionId='" + connectionId + "'")
         .toString();
-  }
-
-  public static class Builder {
-    private String connectionId;
-
-    Builder() {
-    }
-
-    public Builder connectionId(String connectionId) {
-      this.connectionId = connectionId;
-      return this;
-    }
-
-    public IntegrationConnectionIdExtension build() {
-      return new IntegrationConnectionIdExtension(connectionId);
-    }
   }
 }

@@ -85,7 +85,7 @@ public @interface ApiGatewayIntegration {
   /**
    * Integration timeouts between 50 ms and 29,000 ms.
    */
-  int timeoutInMillis() default 29000;
+  int timeoutInMillis() default -1;
 
   /**
    * The type of integration with the specified backend

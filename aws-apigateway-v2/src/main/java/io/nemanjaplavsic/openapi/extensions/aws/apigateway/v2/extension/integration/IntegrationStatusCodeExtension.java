@@ -15,10 +15,6 @@ public class IntegrationStatusCodeExtension implements IntegrationExtension<Stri
     this.statusCode = statusCode;
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
   public Integer statusCode() {
     return statusCode;
   }
@@ -56,21 +52,5 @@ public class IntegrationStatusCodeExtension implements IntegrationExtension<Stri
   @Override
   public int hashCode() {
     return Objects.hash(statusCode);
-  }
-
-  public static class Builder {
-    private Integer statusCode;
-
-    Builder() {
-    }
-
-    public Builder statusCode(Integer statusCode) {
-      this.statusCode = statusCode;
-      return this;
-    }
-
-    public IntegrationStatusCodeExtension build() {
-      return new IntegrationStatusCodeExtension(statusCode);
-    }
   }
 }

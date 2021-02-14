@@ -1,5 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
+import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 import springfox.documentation.service.StringVendorExtension;
 
@@ -10,26 +11,14 @@ public class IntegrationCacheNamespaceExtension implements IntegrationExtension<
 
   public static final String NAME = "cacheNamespace";
 
-  private String cacheNamespace;
+  private final String cacheNamespace;
 
-  public IntegrationCacheNamespaceExtension() {
-  }
-
-  public IntegrationCacheNamespaceExtension(String cacheNamespace) {
-    this.cacheNamespace = cacheNamespace;
-  }
-
-  public static Builder builder() {
-    return new Builder();
+  public IntegrationCacheNamespaceExtension(@Nullable String cacheNamespace) {
+    this.cacheNamespace = Objects.requireNonNull(cacheNamespace, "Cannot create instance of IntegrationCacheNamespaceExtension with null value!");
   }
 
   public String cacheNamespace() {
     return cacheNamespace;
-  }
-
-  public IntegrationCacheNamespaceExtension cacheNamespace(String cacheNamespace) {
-    this.cacheNamespace = cacheNamespace;
-    return this;
   }
 
   @Override
@@ -52,7 +41,7 @@ public class IntegrationCacheNamespaceExtension implements IntegrationExtension<
     if (this == object) return true;
     if (!(object instanceof IntegrationCacheNamespaceExtension)) return false;
     IntegrationCacheNamespaceExtension that = (IntegrationCacheNamespaceExtension) object;
-    return cacheNamespace.equals(that.cacheNamespace);
+    return Objects.equals(cacheNamespace, that.cacheNamespace);
   }
 
   @Override
@@ -65,21 +54,5 @@ public class IntegrationCacheNamespaceExtension implements IntegrationExtension<
     return new StringJoiner(", ", IntegrationCacheNamespaceExtension.class.getSimpleName() + "[", "]")
         .add("cacheNamespace='" + cacheNamespace + "'")
         .toString();
-  }
-
-  public static class Builder {
-    private String cacheNamespace;
-
-    Builder() {
-    }
-
-    public Builder cacheNamespace(String cacheNamespace) {
-      this.cacheNamespace = cacheNamespace;
-      return this;
-    }
-
-    public IntegrationCacheNamespaceExtension build() {
-      return new IntegrationCacheNamespaceExtension(cacheNamespace);
-    }
   }
 }

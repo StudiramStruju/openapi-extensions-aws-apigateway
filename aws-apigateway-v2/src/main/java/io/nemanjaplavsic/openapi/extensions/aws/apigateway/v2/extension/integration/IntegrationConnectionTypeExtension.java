@@ -14,14 +14,11 @@ public class IntegrationConnectionTypeExtension implements IntegrationExtension<
   private ConnectionType connectionType;
 
   public IntegrationConnectionTypeExtension() {
+    this(null);
   }
 
   public IntegrationConnectionTypeExtension(@Nullable ConnectionType connectionType) {
     this.connectionType = Objects.requireNonNullElse(connectionType, ConnectionType.NONE);
-  }
-
-  public static Builder builder() {
-    return new Builder();
   }
 
   public IntegrationConnectionTypeExtension connectionType(ConnectionType connectionType) {
@@ -68,22 +65,5 @@ public class IntegrationConnectionTypeExtension implements IntegrationExtension<
   @Override
   public int hashCode() {
     return Objects.hash(connectionType);
-  }
-
-  public static class Builder {
-    private ConnectionType connectionType;
-
-    Builder() {
-      connectionType = ConnectionType.NONE;
-    }
-
-    public Builder connectionType(ConnectionType connectionType) {
-      this.connectionType = connectionType;
-      return this;
-    }
-
-    public IntegrationConnectionTypeExtension build() {
-      return new IntegrationConnectionTypeExtension(connectionType);
-    }
   }
 }

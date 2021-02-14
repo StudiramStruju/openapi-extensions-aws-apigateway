@@ -1,9 +1,9 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.request.IntegrationRequestParameterExtension;
 import springfox.documentation.service.ObjectVendorExtension;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -22,17 +22,19 @@ public class IntegrationRequestParametersExtension implements IntegrationExtensi
     this.requestParameters = Objects.requireNonNullElse(requestParameters, new ArrayList<>());
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
   public IntegrationRequestParametersExtension parameter(IntegrationRequestParameterExtension parameter) {
-    requestParameters.stream()
-        .filter(existing -> existing.matches(parameter))
-        .findFirst()
-        .ifPresentOrElse(
-            existing -> existing.update(parameter),
-            () -> requestParameters.add(parameter));
+    if (parameter.isValid()) {
+      requestParameters.stream()
+          .filter(IntegrationRequestParameterExtension::isValid)
+          .filter(existing -> existing.matches(parameter))
+          .findFirst()
+          .ifPresentOrElse(
+              existing -> {
+                requestParameters.remove(existing);
+                requestParameters.add(parameter);
+              },
+              () -> requestParameters.add(parameter));
+    }
     return this;
   }
 
@@ -83,31 +85,5 @@ public class IntegrationRequestParametersExtension implements IntegrationExtensi
     return new StringJoiner(", ", IntegrationRequestParametersExtension.class.getSimpleName() + "[", "]")
         .add("requestParameters=" + requestParameters)
         .toString();
-  }
-
-  public static class Builder {
-    private final ArrayList<IntegrationRequestParameterExtension> requestParameters = new ArrayList<>();
-
-    Builder() {
-    }
-
-    public Builder requestParameter(IntegrationRequestParameterExtension requestParameter) {
-      this.requestParameters.add(requestParameter);
-      return this;
-    }
-
-    public Builder requestParameters(Collection<? extends IntegrationRequestParameterExtension> requestParameters) {
-      this.requestParameters.addAll(requestParameters);
-      return this;
-    }
-
-    public Builder clearRequestParameters() {
-      this.requestParameters.clear();
-      return this;
-    }
-
-    public IntegrationRequestParametersExtension build() {
-      return new IntegrationRequestParametersExtension(requestParameters);
-    }
   }
 }

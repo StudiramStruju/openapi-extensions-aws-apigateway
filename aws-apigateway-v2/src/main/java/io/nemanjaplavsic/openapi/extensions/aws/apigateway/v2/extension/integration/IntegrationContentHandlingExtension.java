@@ -21,13 +21,8 @@ public class IntegrationContentHandlingExtension implements IntegrationExtension
     this.contentHandling = Objects.requireNonNullElse(contentHandling, ContentHandling.NONE);
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
   public IntegrationContentHandlingExtension contentHandling(@Nullable ContentHandling contentHandling) {
-    if (Objects.nonNull(contentHandling))
-      this.contentHandling = contentHandling;
+    this.contentHandling = Objects.requireNonNullElse(contentHandling, ContentHandling.NONE);
     return this;
   }
 
@@ -69,22 +64,5 @@ public class IntegrationContentHandlingExtension implements IntegrationExtension
   @Override
   public int hashCode() {
     return Objects.hash(contentHandling);
-  }
-
-  public static class Builder {
-    @Nullable
-    private ContentHandling contentHandling;
-
-    Builder() {
-    }
-
-    public Builder contentHandling(ContentHandling contentHandling) {
-      this.contentHandling = contentHandling;
-      return this;
-    }
-
-    public IntegrationContentHandlingExtension build() {
-      return new IntegrationContentHandlingExtension(contentHandling);
-    }
   }
 }

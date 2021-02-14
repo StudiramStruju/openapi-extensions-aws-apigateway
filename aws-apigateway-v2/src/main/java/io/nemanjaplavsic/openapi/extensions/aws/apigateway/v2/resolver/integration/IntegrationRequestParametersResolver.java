@@ -6,8 +6,8 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.Integrati
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.MethodRequestParameterType;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.RequestParameterSource;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.exception.ApiGatewayIntegrationExtensionPropertyResolverException;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationRequestParameterExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationRequestParametersExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.request.IntegrationRequestParameterExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,43 +35,42 @@ public class IntegrationRequestParametersResolver implements IntegrationResolver
 
     // Resolve Global Parameters
     final List<IntegrationRequestParameterExtension> globalParameters = context.getGlobalOperationParameters()
-        .stream().map(this::from).collect(Collectors.toList());
+        .stream().map(this::from)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
     extension.parameters(globalParameters);
 
     // Resolve Method Parameters
     final List<IntegrationRequestParameterExtension> methodParameters = context.getParameters()
-        .stream().map(parameter -> from(parameter, context.getName())).filter(Objects::nonNull).collect(Collectors.toList());
+        .stream().map(parameter -> from(parameter, context.getName()))
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
     extension.parameters(methodParameters);
 
     // Resolve Annotation parameters
     final List<IntegrationRequestParameterExtension> annotationParameters = context.findAnnotation(IntegrationRequestParameters.class)
-        .transform(parameters -> Arrays.stream(parameters.value()).map(this::from).collect(Collectors.toList()))
+        .transform(parameters -> Arrays.stream(parameters.value()).map(this::from)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList()))
         .or(new ArrayList<>());
     extension.parameters(annotationParameters);
-
 
     return extension;
   }
 
   public IntegrationRequestParameterExtension from(Parameter parameter) {
-    IntegrationRequestParameterExtension extension = new IntegrationRequestParameterExtension();
     final String name = Objects.requireNonNull(parameter.getName(),
         String.format("Global parameter does not have 'name' defined! %s", parameter.toString()));
 
     final String paramType = Objects.requireNonNull(parameter.getParamType(),
         String.format("Global parameter does not have 'paramType' defined! %s", parameter.toString())).toLowerCase();
 
-    return extension
-        .source(RequestParameterSource.METHOD)
-        .integrationParameterType(getIntegrationTypeFromParameterType(paramType))
-        .integrationParameterName(name)
+    return new IntegrationRequestParameterExtension(RequestParameterSource.METHOD, getIntegrationTypeFromParameterType(paramType), name)
         .methodParameterType(getMethodTypeFromParameterType(paramType))
         .methodParameterName(name);
   }
 
   public IntegrationRequestParameterExtension from(ResolvedMethodParameter methodParameter, String name) {
-    IntegrationRequestParameterExtension extension = new IntegrationRequestParameterExtension();
-
     // TODO: 2/12/21 Check for @ApiIgnoreProperty and how to handle that
 
     if (methodParameter.findAnnotation(PathVariable.class).isPresent()) {
@@ -81,9 +80,8 @@ public class IntegrationRequestParametersResolver implements IntegrationResolver
         log.warn("Could not resolve PathVariable Method parameter for method '{}'! No name defined!", name);
         return null;
       }
-      extension.source(RequestParameterSource.METHOD)
-          .integrationParameterType(IntegrationRequestParameterType.PATH)
-          .integrationParameterName(parameterName)
+
+      return new IntegrationRequestParameterExtension(RequestParameterSource.METHOD, IntegrationRequestParameterType.PATH, name)
           .methodParameterType(MethodRequestParameterType.PATH)
           .methodParameterName(parameterName);
     }
@@ -95,9 +93,8 @@ public class IntegrationRequestParametersResolver implements IntegrationResolver
         log.warn("Could not resolve RequestParam Method parameter for method '{}'! No name defined!", name);
         return null;
       }
-      extension.source(RequestParameterSource.METHOD)
-          .integrationParameterType(IntegrationRequestParameterType.QUERY)
-          .integrationParameterName(parameterName)
+
+      return new IntegrationRequestParameterExtension(RequestParameterSource.METHOD, IntegrationRequestParameterType.QUERY, name)
           .methodParameterType(MethodRequestParameterType.QUERY)
           .methodParameterName(parameterName);
     }
@@ -109,26 +106,25 @@ public class IntegrationRequestParametersResolver implements IntegrationResolver
         log.warn("Could not resolve RequestHeader Method parameter for method '{}'! No name defined!", name);
         return null;
       }
-      extension.source(RequestParameterSource.METHOD)
-          .integrationParameterType(IntegrationRequestParameterType.HEADER)
-          .integrationParameterName(parameterName)
+
+      return new IntegrationRequestParameterExtension(RequestParameterSource.METHOD, IntegrationRequestParameterType.HEADER, name)
           .methodParameterType(MethodRequestParameterType.HEADER)
           .methodParameterName(parameterName);
     }
-    return extension;
+    return null;
   }
 
   public IntegrationRequestParameterExtension from(IntegrationRequestParameter parameter) {
-    return IntegrationRequestParameterExtension.builder()
-        .source(parameter.source())
-        .integrationParameterType(parameter.integrationParameterType())
-        .integrationParameterName(parameter.integrationParameterName())
-        .methodParameterType(parameter.methodParameterType())
-        .methodParameterName(parameter.methodParameterName())
-        .contextVariableName(parameter.contextVariableName())
-        .stageVariableName(parameter.stageVariableName())
-        .staticValueName(parameter.staticValueName())
-        .build();
+    return new IntegrationRequestParameterExtension(
+        parameter.source(),
+        parameter.integrationParameterType(),
+        parameter.integrationParameterName(),
+        parameter.methodParameterType(),
+        parameter.methodParameterName(),
+        parameter.contextVariableName(),
+        parameter.stageVariableName(),
+        parameter.staticValueName()
+    );
   }
 
   public RequestParameterSource getSourceFromType(String paramType) {

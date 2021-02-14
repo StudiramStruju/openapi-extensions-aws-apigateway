@@ -1,5 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
+import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 import springfox.documentation.service.StringVendorExtension;
 
@@ -10,25 +11,14 @@ public class IntegrationCredentialsExtension implements IntegrationExtension<Str
 
   public static final String NAME = "credentials";
 
-  private String credentials;
+  @Nullable
+  private final String credentials;
 
-  public IntegrationCredentialsExtension() {
+  public IntegrationCredentialsExtension(@Nullable String credentials) {
+    this.credentials = credentials;
   }
 
-  public IntegrationCredentialsExtension(String credentials) {
-    this.credentials = Objects.requireNonNull(credentials);
-  }
-
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  public IntegrationCredentialsExtension credentials(String credentials) {
-    if (StringUtils.hasText(credentials))
-      this.credentials = credentials;
-    return this;
-  }
-
+  @Nullable
   public String credentials() {
     return credentials;
   }
@@ -53,7 +43,7 @@ public class IntegrationCredentialsExtension implements IntegrationExtension<Str
     if (this == object) return true;
     if (!(object instanceof IntegrationCredentialsExtension)) return false;
     IntegrationCredentialsExtension that = (IntegrationCredentialsExtension) object;
-    return credentials.equals(that.credentials);
+    return Objects.equals(credentials, that.credentials);
   }
 
   @Override
@@ -66,21 +56,5 @@ public class IntegrationCredentialsExtension implements IntegrationExtension<Str
     return new StringJoiner(", ", IntegrationCredentialsExtension.class.getSimpleName() + "[", "]")
         .add("credentials='" + credentials + "'")
         .toString();
-  }
-
-  public static class Builder {
-    private String credentials;
-
-    Builder() {
-    }
-
-    public Builder credentials(String credentials) {
-      this.credentials = credentials;
-      return this;
-    }
-
-    public IntegrationCredentialsExtension build() {
-      return new IntegrationCredentialsExtension(credentials);
-    }
   }
 }

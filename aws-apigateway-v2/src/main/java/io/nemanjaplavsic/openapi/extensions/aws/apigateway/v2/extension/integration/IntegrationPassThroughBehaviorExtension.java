@@ -1,6 +1,7 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.PassThroughBehavior;
+import org.springframework.lang.Nullable;
 import springfox.documentation.service.StringVendorExtension;
 
 import java.util.Objects;
@@ -10,22 +11,14 @@ public class IntegrationPassThroughBehaviorExtension implements IntegrationExten
 
   public static final String NAME = "passthroughBehavior";
 
-  private PassThroughBehavior passThroughBehavior;
+  private final PassThroughBehavior passThroughBehavior;
 
   public IntegrationPassThroughBehaviorExtension() {
+    this(null);
   }
 
-  public IntegrationPassThroughBehaviorExtension(PassThroughBehavior passThroughBehavior) {
+  public IntegrationPassThroughBehaviorExtension(@Nullable PassThroughBehavior passThroughBehavior) {
     this.passThroughBehavior = Objects.requireNonNullElse(passThroughBehavior, PassThroughBehavior.NONE);
-  }
-
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  public IntegrationPassThroughBehaviorExtension passThroughBehavior(PassThroughBehavior passThroughBehavior) {
-    this.passThroughBehavior = Objects.requireNonNullElse(passThroughBehavior, PassThroughBehavior.NONE);
-    return this;
   }
 
   public PassThroughBehavior passThroughBehavior() {
@@ -65,22 +58,5 @@ public class IntegrationPassThroughBehaviorExtension implements IntegrationExten
     return new StringJoiner(", ", IntegrationPassThroughBehaviorExtension.class.getSimpleName() + "[", "]")
         .add("passThroughBehavior=" + passThroughBehavior)
         .toString();
-  }
-
-  public static class Builder {
-    private PassThroughBehavior passThroughBehavior;
-
-    Builder() {
-      passThroughBehavior = PassThroughBehavior.NONE;
-    }
-
-    public Builder passThroughBehavior(PassThroughBehavior passThroughBehavior) {
-      this.passThroughBehavior = passThroughBehavior;
-      return this;
-    }
-
-    public IntegrationPassThroughBehaviorExtension build() {
-      return new IntegrationPassThroughBehaviorExtension(passThroughBehavior);
-    }
   }
 }

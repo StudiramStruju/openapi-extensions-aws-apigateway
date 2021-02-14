@@ -1,7 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationType;
-import org.springframework.lang.Nullable;
 import springfox.documentation.service.StringVendorExtension;
 
 import java.util.Objects;
@@ -11,23 +10,10 @@ public class IntegrationIntegrationTypeExtension implements IntegrationExtension
 
   public static final String NAME = "type";
 
-  private IntegrationType integrationType;
-
-  public IntegrationIntegrationTypeExtension() {
-  }
+  private final IntegrationType integrationType;
 
   public IntegrationIntegrationTypeExtension(IntegrationType integrationType) {
     this.integrationType = integrationType;
-  }
-
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  public IntegrationIntegrationTypeExtension integrationType(@Nullable IntegrationType integrationType) {
-    if (Objects.nonNull(integrationType))
-      this.integrationType = integrationType;
-    return this;
   }
 
   public IntegrationType integrationType() {
@@ -67,22 +53,5 @@ public class IntegrationIntegrationTypeExtension implements IntegrationExtension
     return new StringJoiner(", ", IntegrationIntegrationTypeExtension.class.getSimpleName() + "[", "]")
         .add("integrationType=" + integrationType)
         .toString();
-  }
-
-  public static class Builder {
-    private IntegrationType integrationType;
-
-    Builder() {
-      integrationType = IntegrationType.AWS;
-    }
-
-    public Builder integrationType(IntegrationType integrationType) {
-      this.integrationType = integrationType;
-      return this;
-    }
-
-    public IntegrationIntegrationTypeExtension build() {
-      return new IntegrationIntegrationTypeExtension(integrationType);
-    }
   }
 }

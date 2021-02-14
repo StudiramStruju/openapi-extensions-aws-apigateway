@@ -1,5 +1,6 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.request;
 
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationExtension;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import springfox.documentation.service.StringVendorExtension;
@@ -9,31 +10,16 @@ import java.util.StringJoiner;
 
 public class IntegrationRequestTemplateExtension implements IntegrationExtension<StringVendorExtension> {
 
-  private MediaType mediaType;
-  private String template;
+  private final MediaType mediaType;
+  private final String template;
+
+  public IntegrationRequestTemplateExtension(String mediaType, String template) {
+    this(MediaType.parseMediaType(mediaType), template);
+  }
 
   public IntegrationRequestTemplateExtension(MediaType mediaType, String template) {
     this.mediaType = Objects.requireNonNull(mediaType);
     this.template = Objects.requireNonNull(template);
-  }
-
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  public IntegrationRequestTemplateExtension mediaType(String mediaType) {
-    this.mediaType = MediaType.parseMediaType(mediaType);
-    return this;
-  }
-
-  public IntegrationRequestTemplateExtension mediaType(MediaType mediaType) {
-    this.mediaType = mediaType;
-    return this;
-  }
-
-  public IntegrationRequestTemplateExtension template(String template) {
-    this.template = template;
-    return this;
   }
 
   public MediaType mediaType() {
@@ -46,10 +32,6 @@ public class IntegrationRequestTemplateExtension implements IntegrationExtension
 
   public boolean matches(IntegrationRequestTemplateExtension template) {
     return mediaType.equals(template.mediaType());
-  }
-
-  public IntegrationRequestTemplateExtension update(IntegrationRequestTemplateExtension template) {
-    return this.template(template.template());
   }
 
   @Override
@@ -90,27 +72,5 @@ public class IntegrationRequestTemplateExtension implements IntegrationExtension
         .add("mediaType=" + mediaType)
         .add("template='" + template + "'")
         .toString();
-  }
-
-  public static class Builder {
-    private MediaType mediaType;
-    private String template;
-
-    Builder() {
-    }
-
-    public Builder mediaType(MediaType mediaType) {
-      this.mediaType = mediaType;
-      return this;
-    }
-
-    public Builder template(String template) {
-      this.template = template;
-      return this;
-    }
-
-    public IntegrationRequestTemplateExtension build() {
-      return new IntegrationRequestTemplateExtension(mediaType, template);
-    }
   }
 }

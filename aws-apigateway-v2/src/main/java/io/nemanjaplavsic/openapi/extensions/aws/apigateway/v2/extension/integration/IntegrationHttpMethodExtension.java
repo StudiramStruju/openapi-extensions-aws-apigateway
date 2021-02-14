@@ -12,28 +12,26 @@ public class IntegrationHttpMethodExtension implements IntegrationExtension<Stri
 
   public static final String NAME = "httpMethod";
 
-  private HttpMethod httpMethod;
   private RequestMethod requestMethod;
+  private HttpMethod httpMethod;
 
-  public IntegrationHttpMethodExtension() {
+
+  public IntegrationHttpMethodExtension(RequestMethod requestMethod) {
+    this(requestMethod, null);
   }
 
-  public IntegrationHttpMethodExtension(@Nullable HttpMethod httpMethod, RequestMethod requestMethod) {
+  public IntegrationHttpMethodExtension(RequestMethod requestMethod, @Nullable HttpMethod httpMethod) {
+    this.requestMethod = Objects.requireNonNull(requestMethod, "Cannot create instance of IntegrationHttpMethodExtension with RequestMethod as null value!");
     this.httpMethod = Objects.requireNonNullElse(httpMethod, HttpMethod.RESOLVE_FROM_METHOD);
-    this.requestMethod = requestMethod;
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  public IntegrationHttpMethodExtension httpMethod(HttpMethod httpMethod) {
+  public IntegrationHttpMethodExtension httpMethod(@Nullable HttpMethod httpMethod) {
     this.httpMethod = Objects.requireNonNullElse(httpMethod, HttpMethod.RESOLVE_FROM_METHOD);
     return this;
   }
 
   public IntegrationHttpMethodExtension requestMethod(RequestMethod requestMethod) {
-    this.requestMethod = requestMethod;
+    this.requestMethod = Objects.requireNonNull(requestMethod, "RequestMethod cannot be null!");
     return this;
   }
 
@@ -84,28 +82,5 @@ public class IntegrationHttpMethodExtension implements IntegrationExtension<Stri
   @Override
   public int hashCode() {
     return Objects.hash(httpMethod);
-  }
-
-  public static class Builder {
-    private HttpMethod httpMethod;
-    private RequestMethod requestMethod;
-
-    Builder() {
-      httpMethod = HttpMethod.RESOLVE_FROM_METHOD;
-    }
-
-    public IntegrationHttpMethodExtension.Builder httpMethod(HttpMethod httpMethod) {
-      this.httpMethod = httpMethod;
-      return this;
-    }
-
-    public Builder requestMethod(RequestMethod requestMethod) {
-      this.requestMethod = requestMethod;
-      return this;
-    }
-
-    public IntegrationHttpMethodExtension build() {
-      return new IntegrationHttpMethodExtension(httpMethod, requestMethod);
-    }
   }
 }

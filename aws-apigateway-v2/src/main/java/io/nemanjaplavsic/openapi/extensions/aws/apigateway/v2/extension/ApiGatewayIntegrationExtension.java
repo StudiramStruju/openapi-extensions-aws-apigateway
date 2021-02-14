@@ -1,5 +1,7 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension;
 
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ConnectionType;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ContentHandling;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationCacheKeyParametersExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationCacheNamespaceExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationConnectionIdExtension;
@@ -15,165 +17,206 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integrat
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationResponsesExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationTimeoutInMillisExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationUriExtension;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.RequestMethod;
 import springfox.documentation.service.ObjectVendorExtension;
 import springfox.documentation.service.VendorExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.StringJoiner;
 
 public class ApiGatewayIntegrationExtension implements ApiGatewayExtension<ObjectVendorExtension> {
 
   public static final String NAME = "x-amazon-apigateway-integration";
 
+  @Nullable
   private IntegrationCacheKeyParametersExtension cacheKeyParameters;
+  @Nullable
   private IntegrationCacheNamespaceExtension cacheNamespace;
+  @Nullable
   private IntegrationConnectionIdExtension connectionId;
+  @Nullable
   private IntegrationConnectionTypeExtension connectionType;
+  @Nullable
   private IntegrationCredentialsExtension credentials;
+  @Nullable
   private IntegrationContentHandlingExtension contentHandling;
+  @Nullable
   private IntegrationHttpMethodExtension httpMethod;
+  @Nullable
   private IntegrationPassThroughBehaviorExtension passthroughBehavior;
   private IntegrationRequestParametersExtension requestParameters;
   private IntegrationRequestTemplatesExtension requestTemplates;
   private IntegrationResponsesExtension responses;
+  @Nullable
   private IntegrationTimeoutInMillisExtension timeoutInMillis;
+  @Nullable
   private IntegrationIntegrationTypeExtension type;
+  @Nullable
   private IntegrationUriExtension uri;
-  // todo :: TlsConfig
 
-  public ApiGatewayIntegrationExtension(IntegrationCacheKeyParametersExtension cacheKeyParameters,
-                                        IntegrationCacheNamespaceExtension cacheNamespace,
-                                        IntegrationConnectionIdExtension connectionId,
-                                        IntegrationConnectionTypeExtension connectionType,
-                                        IntegrationCredentialsExtension credentials,
-                                        IntegrationContentHandlingExtension contentHandling,
-                                        IntegrationHttpMethodExtension httpMethod,
-                                        IntegrationPassThroughBehaviorExtension passthroughBehavior,
-                                        IntegrationRequestParametersExtension requestParameters,
-                                        IntegrationRequestTemplatesExtension requestTemplates,
-                                        IntegrationResponsesExtension responses,
-                                        IntegrationTimeoutInMillisExtension timeoutInMillis,
-                                        IntegrationIntegrationTypeExtension type,
-                                        IntegrationUriExtension uri) {
-    this.cacheKeyParameters = Objects.requireNonNullElse(cacheKeyParameters, new IntegrationCacheKeyParametersExtension());
-    this.cacheNamespace = Objects.requireNonNullElse(cacheNamespace, new IntegrationCacheNamespaceExtension());
-    this.connectionId = Objects.requireNonNullElse(connectionId, new IntegrationConnectionIdExtension());
-    this.connectionType = Objects.requireNonNullElse(connectionType, new IntegrationConnectionTypeExtension());
-    this.credentials = Objects.requireNonNullElse(credentials, new IntegrationCredentialsExtension());
-    this.contentHandling = Objects.requireNonNullElse(contentHandling, new IntegrationContentHandlingExtension());
-    this.httpMethod = Objects.requireNonNullElse(httpMethod, new IntegrationHttpMethodExtension());
-    this.passthroughBehavior = Objects.requireNonNullElse(passthroughBehavior, new IntegrationPassThroughBehaviorExtension());
-    this.requestParameters = Objects.requireNonNullElse(requestParameters, new IntegrationRequestParametersExtension());
-    this.requestTemplates = Objects.requireNonNullElse(requestTemplates, new IntegrationRequestTemplatesExtension());
-    this.responses = Objects.requireNonNullElse(responses, new IntegrationResponsesExtension());
-    this.timeoutInMillis = Objects.requireNonNullElse(timeoutInMillis, new IntegrationTimeoutInMillisExtension());
-    this.type = Objects.requireNonNullElse(type, new IntegrationIntegrationTypeExtension());
-    this.uri = Objects.requireNonNullElse(uri, new IntegrationUriExtension());
+  public ApiGatewayIntegrationExtension() {
+    this.cacheKeyParameters = null;
+    this.cacheNamespace = null;
+    this.connectionId = null;
+    this.connectionType = null;
+    this.credentials = null;
+    this.contentHandling = null;
+    this.httpMethod = null;
+    this.passthroughBehavior = null;
+    this.requestParameters = new IntegrationRequestParametersExtension();
+    this.requestTemplates = new IntegrationRequestTemplatesExtension();
+    this.responses = new IntegrationResponsesExtension();
+    this.timeoutInMillis = null;
+    this.type = null;
+    this.uri = null;
   }
 
-  public static Builder builder() {
-    return new Builder();
+  public ApiGatewayIntegrationExtension cacheKeyParameters(@Nullable Set<String> cacheKeyParameters) {
+    this.cacheKeyParameters = new IntegrationCacheKeyParametersExtension(cacheKeyParameters);
+    return this;
   }
 
-  public ApiGatewayIntegrationExtension cacheKeyParameters(IntegrationCacheKeyParametersExtension cacheKeyParameters) {
+  public ApiGatewayIntegrationExtension cacheKeyParameters(@Nullable IntegrationCacheKeyParametersExtension cacheKeyParameters) {
     this.cacheKeyParameters = cacheKeyParameters;
     return this;
   }
 
-  public ApiGatewayIntegrationExtension cacheNamespace(IntegrationCacheNamespaceExtension cacheNamespace) {
+  public ApiGatewayIntegrationExtension cacheNamespace(@Nullable String cacheNamespace) {
+    this.cacheNamespace = new IntegrationCacheNamespaceExtension(cacheNamespace);
+    return this;
+  }
+
+  public ApiGatewayIntegrationExtension cacheNamespace(@Nullable IntegrationCacheNamespaceExtension cacheNamespace) {
     this.cacheNamespace = cacheNamespace;
     return this;
   }
 
-  public ApiGatewayIntegrationExtension connectionId(IntegrationConnectionIdExtension connectionId) {
+  public ApiGatewayIntegrationExtension connectionId(@Nullable String connectionId) {
+    this.connectionId = new IntegrationConnectionIdExtension(connectionId);
+    return this;
+  }
+
+  public ApiGatewayIntegrationExtension connectionId(@Nullable IntegrationConnectionIdExtension connectionId) {
     this.connectionId = connectionId;
     return this;
   }
 
-  public ApiGatewayIntegrationExtension connectionType(IntegrationConnectionTypeExtension connectionType) {
+  public ApiGatewayIntegrationExtension connectionType(@Nullable ConnectionType connectionType) {
+    this.connectionType = new IntegrationConnectionTypeExtension(connectionType);
+    return this;
+  }
+
+  public ApiGatewayIntegrationExtension connectionType(@Nullable IntegrationConnectionTypeExtension connectionType) {
     this.connectionType = connectionType;
     return this;
   }
 
-  public ApiGatewayIntegrationExtension credentials(IntegrationCredentialsExtension credentials) {
+  public ApiGatewayIntegrationExtension credentials(@Nullable String credentials) {
+    this.credentials = new IntegrationCredentialsExtension(credentials);
+    return this;
+  }
+
+  public ApiGatewayIntegrationExtension credentials(@Nullable IntegrationCredentialsExtension credentials) {
     this.credentials = credentials;
     return this;
   }
 
-  public ApiGatewayIntegrationExtension contentHandling(IntegrationContentHandlingExtension contentHandling) {
+  public ApiGatewayIntegrationExtension contentHandling(@Nullable ContentHandling contentHandling) {
+    this.contentHandling = new IntegrationContentHandlingExtension(contentHandling);
+    return this;
+  }
+
+  public ApiGatewayIntegrationExtension contentHandling(@Nullable IntegrationContentHandlingExtension contentHandling) {
     this.contentHandling = contentHandling;
     return this;
   }
 
-  public ApiGatewayIntegrationExtension httpMethod(IntegrationHttpMethodExtension httpMethod) {
+  public ApiGatewayIntegrationExtension httpMethod(@Nullable RequestMethod requestMethod) {
+    this.httpMethod = new IntegrationHttpMethodExtension(requestMethod);
+    return this;
+  }
+
+  public ApiGatewayIntegrationExtension httpMethod(@Nullable IntegrationHttpMethodExtension httpMethod) {
     this.httpMethod = httpMethod;
     return this;
   }
 
-  public ApiGatewayIntegrationExtension passthroughBehavior(IntegrationPassThroughBehaviorExtension passthroughBehavior) {
+  public ApiGatewayIntegrationExtension passthroughBehavior(@Nullable IntegrationPassThroughBehaviorExtension passthroughBehavior) {
     this.passthroughBehavior = passthroughBehavior;
     return this;
   }
 
-  public ApiGatewayIntegrationExtension requestParameters(IntegrationRequestParametersExtension requestParameters) {
-    this.requestParameters = requestParameters;
+  public ApiGatewayIntegrationExtension requestParameters(@Nullable IntegrationRequestParametersExtension requestParameters) {
+    this.requestParameters = Objects.requireNonNullElse(requestParameters, new IntegrationRequestParametersExtension());
     return this;
   }
 
-  public ApiGatewayIntegrationExtension requestTemplates(IntegrationRequestTemplatesExtension requestTemplates) {
-    this.requestTemplates = requestTemplates;
+  public ApiGatewayIntegrationExtension requestTemplates(@Nullable IntegrationRequestTemplatesExtension requestTemplates) {
+    this.requestTemplates = Objects.requireNonNullElse(requestTemplates, new IntegrationRequestTemplatesExtension());
     return this;
   }
 
-  public ApiGatewayIntegrationExtension responses(IntegrationResponsesExtension responses) {
-    this.responses = responses;
+  public ApiGatewayIntegrationExtension responses(@Nullable IntegrationResponsesExtension responses) {
+    this.responses = Objects.requireNonNullElse(responses, new IntegrationResponsesExtension());
+    ;
     return this;
   }
 
-  public ApiGatewayIntegrationExtension timeoutInMillis(IntegrationTimeoutInMillisExtension timeoutInMillis) {
+  public ApiGatewayIntegrationExtension timeoutInMillis(@Nullable IntegrationTimeoutInMillisExtension timeoutInMillis) {
     this.timeoutInMillis = timeoutInMillis;
     return this;
   }
 
-  public ApiGatewayIntegrationExtension type(IntegrationIntegrationTypeExtension type) {
+  public ApiGatewayIntegrationExtension type(@Nullable IntegrationIntegrationTypeExtension type) {
     this.type = type;
     return this;
   }
 
-  public ApiGatewayIntegrationExtension uri(IntegrationUriExtension uri) {
+  public ApiGatewayIntegrationExtension uri(@Nullable IntegrationUriExtension uri) {
     this.uri = uri;
     return this;
   }
 
+  @Nullable
   public IntegrationCacheKeyParametersExtension cacheKeyParameters() {
     return cacheKeyParameters;
   }
 
+  @Nullable
   public IntegrationCacheNamespaceExtension cacheNamespace() {
     return cacheNamespace;
   }
 
+  @Nullable
   public IntegrationConnectionIdExtension connectionId() {
     return connectionId;
   }
 
+  @Nullable
   public IntegrationConnectionTypeExtension connectionType() {
     return connectionType;
   }
 
+  @Nullable
   public IntegrationCredentialsExtension credentials() {
     return credentials;
   }
 
+  @Nullable
   public IntegrationContentHandlingExtension contentHandling() {
     return contentHandling;
   }
 
+  @Nullable
   public IntegrationHttpMethodExtension httpMethod() {
     return httpMethod;
   }
 
+  @Nullable
   public IntegrationPassThroughBehaviorExtension passthroughBehavior() {
     return passthroughBehavior;
   }
@@ -190,14 +233,17 @@ public class ApiGatewayIntegrationExtension implements ApiGatewayExtension<Objec
     return responses;
   }
 
+  @Nullable
   public IntegrationTimeoutInMillisExtension timeoutInMillis() {
     return timeoutInMillis;
   }
 
+  @Nullable
   public IntegrationIntegrationTypeExtension type() {
     return type;
   }
 
+  @Nullable
   public IntegrationUriExtension uri() {
     return uri;
   }
@@ -207,20 +253,25 @@ public class ApiGatewayIntegrationExtension implements ApiGatewayExtension<Objec
     if (this == object) return true;
     if (!(object instanceof ApiGatewayIntegrationExtension)) return false;
     ApiGatewayIntegrationExtension that = (ApiGatewayIntegrationExtension) object;
-    return cacheKeyParameters.equals(that.cacheKeyParameters) &&
-        cacheNamespace.equals(that.cacheNamespace) &&
-        connectionId.equals(that.connectionId) &&
-        connectionType.equals(that.connectionType) &&
-        credentials.equals(that.credentials) &&
-        contentHandling.equals(that.contentHandling) &&
-        httpMethod.equals(that.httpMethod) &&
-        passthroughBehavior.equals(that.passthroughBehavior) &&
+    return Objects.equals(cacheKeyParameters, that.cacheKeyParameters) &&
+        Objects.equals(cacheNamespace, that.cacheNamespace) &&
+        Objects.equals(connectionId, that.connectionId) &&
+        Objects.equals(connectionType, that.connectionType) &&
+        Objects.equals(credentials, that.credentials) &&
+        Objects.equals(contentHandling, that.contentHandling) &&
+        Objects.equals(httpMethod, that.httpMethod) &&
+        Objects.equals(passthroughBehavior, that.passthroughBehavior) &&
         requestParameters.equals(that.requestParameters) &&
         requestTemplates.equals(that.requestTemplates) &&
         responses.equals(that.responses) &&
-        timeoutInMillis.equals(that.timeoutInMillis) &&
-        type.equals(that.type) &&
-        uri.equals(that.uri);
+        Objects.equals(timeoutInMillis, that.timeoutInMillis) &&
+        Objects.equals(type, that.type) &&
+        Objects.equals(uri, that.uri);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(cacheKeyParameters, cacheNamespace, connectionId, connectionType, credentials, contentHandling, httpMethod, passthroughBehavior, requestParameters, requestTemplates, responses, timeoutInMillis, type, uri);
   }
 
   @Override
@@ -243,28 +294,24 @@ public class ApiGatewayIntegrationExtension implements ApiGatewayExtension<Objec
         .toString();
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(cacheKeyParameters, cacheNamespace, connectionId, connectionType, credentials, contentHandling, httpMethod, passthroughBehavior, requestParameters, requestTemplates, responses, timeoutInMillis, type, uri);
-  }
 
   public List<IntegrationExtension> getAllProperties() {
-    return List.of(
-        cacheKeyParameters,
-        cacheNamespace,
-        connectionId,
-        connectionType,
-        credentials,
-        contentHandling,
-        httpMethod,
-        passthroughBehavior,
-        requestParameters,
-        requestTemplates,
-        responses,
-        timeoutInMillis,
-        type,
-        uri
-    );
+    List<IntegrationExtension> properties = new ArrayList<>();
+    if (Objects.nonNull(cacheKeyParameters)) properties.add(cacheKeyParameters);
+    if (Objects.nonNull(cacheNamespace)) properties.add(cacheNamespace);
+    if (Objects.nonNull(connectionId)) properties.add(connectionId);
+    if (Objects.nonNull(connectionType)) properties.add(connectionType);
+    if (Objects.nonNull(credentials)) properties.add(credentials);
+    if (Objects.nonNull(contentHandling)) properties.add(contentHandling);
+    if (Objects.nonNull(httpMethod)) properties.add(httpMethod);
+    if (Objects.nonNull(passthroughBehavior)) properties.add(passthroughBehavior);
+    if (Objects.nonNull(timeoutInMillis)) properties.add(timeoutInMillis);
+    if (Objects.nonNull(type)) properties.add(type);
+    if (Objects.nonNull(uri)) properties.add(uri);
+    properties.add(requestParameters);
+    properties.add(requestTemplates);
+    properties.add(responses);
+    return properties;
   }
 
   @Override
@@ -276,99 +323,5 @@ public class ApiGatewayIntegrationExtension implements ApiGatewayExtension<Objec
         .map(IntegrationExtension<VendorExtension<?>>::toVendorExtension)
         .forEach(extension::addProperty);
     return extension;
-  }
-
-  public static class Builder {
-    private IntegrationCacheKeyParametersExtension cacheKeyParameters;
-    private IntegrationCacheNamespaceExtension cacheNamespace;
-    private IntegrationConnectionIdExtension connectionId;
-    private IntegrationConnectionTypeExtension connectionType;
-    private IntegrationCredentialsExtension credentials;
-    private IntegrationContentHandlingExtension contentHandling;
-    private IntegrationHttpMethodExtension httpMethod;
-    private IntegrationPassThroughBehaviorExtension passthroughBehavior;
-    private IntegrationRequestParametersExtension requestParameters;
-    private IntegrationRequestTemplatesExtension requestTemplates;
-    private IntegrationResponsesExtension responses;
-    private IntegrationTimeoutInMillisExtension timeoutInMillis;
-    private IntegrationIntegrationTypeExtension type;
-    private IntegrationUriExtension uri;
-
-    Builder() {
-    }
-
-    public Builder cacheKeyParameters(IntegrationCacheKeyParametersExtension cacheKeyParameters) {
-      this.cacheKeyParameters = cacheKeyParameters;
-      return this;
-    }
-
-    public Builder cacheNamespace(IntegrationCacheNamespaceExtension cacheNamespace) {
-      this.cacheNamespace = cacheNamespace;
-      return this;
-    }
-
-    public Builder connectionId(IntegrationConnectionIdExtension connectionId) {
-      this.connectionId = connectionId;
-      return this;
-    }
-
-    public Builder connectionType(IntegrationConnectionTypeExtension connectionType) {
-      this.connectionType = connectionType;
-      return this;
-    }
-
-    public Builder credentials(IntegrationCredentialsExtension credentials) {
-      this.credentials = credentials;
-      return this;
-    }
-
-    public Builder contentHandling(IntegrationContentHandlingExtension contentHandling) {
-      this.contentHandling = contentHandling;
-      return this;
-    }
-
-    public Builder httpMethod(IntegrationHttpMethodExtension httpMethod) {
-      this.httpMethod = httpMethod;
-      return this;
-    }
-
-    public Builder passthroughBehavior(IntegrationPassThroughBehaviorExtension passthroughBehavior) {
-      this.passthroughBehavior = passthroughBehavior;
-      return this;
-    }
-
-    public Builder requestParameters(IntegrationRequestParametersExtension requestParameters) {
-      this.requestParameters = requestParameters;
-      return this;
-    }
-
-    public Builder requestTemplates(IntegrationRequestTemplatesExtension requestTemplates) {
-      this.requestTemplates = requestTemplates;
-      return this;
-    }
-
-    public Builder responses(IntegrationResponsesExtension responses) {
-      this.responses = responses;
-      return this;
-    }
-
-    public Builder timeoutInMillis(IntegrationTimeoutInMillisExtension timeoutInMillis) {
-      this.timeoutInMillis = timeoutInMillis;
-      return this;
-    }
-
-    public Builder type(IntegrationIntegrationTypeExtension type) {
-      this.type = type;
-      return this;
-    }
-
-    public Builder uri(IntegrationUriExtension uri) {
-      this.uri = uri;
-      return this;
-    }
-
-    public ApiGatewayIntegrationExtension build() {
-      return new ApiGatewayIntegrationExtension(cacheKeyParameters, cacheNamespace, connectionId, connectionType, credentials, contentHandling, httpMethod, passthroughBehavior, requestParameters, requestTemplates, responses, timeoutInMillis, type, uri);
-    }
   }
 }
