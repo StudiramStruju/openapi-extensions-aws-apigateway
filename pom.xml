@@ -24,6 +24,7 @@
     <modules>
         <module>aws-apigateway-commons</module>
         <module>aws-apigateway-v2</module>
+        <module>aws-apigateway-v3</module>
     </modules>
 
     <build>

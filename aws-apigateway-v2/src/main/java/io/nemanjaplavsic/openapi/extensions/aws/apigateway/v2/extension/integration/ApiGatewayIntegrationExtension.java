@@ -1,22 +1,8 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration;
 
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ConnectionType;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ContentHandling;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationCacheKeyParametersExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationCacheNamespaceExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationConnectionIdExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationConnectionTypeExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationContentHandlingExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationCredentialsExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationHttpMethodExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationIntegrationTypeExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationPassThroughBehaviorExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationRequestParametersExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationRequestTemplatesExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationResponsesExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationTimeoutInMillisExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.IntegrationUriExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.ApiGatewayMethodExtension;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestMethod;
 import springfox.documentation.service.ObjectVendorExtension;
@@ -28,7 +14,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class ApiGatewayIntegrationExtension implements ApiGatewayExtension<ObjectVendorExtension> {
+public class ApiGatewayIntegrationExtension implements ApiGatewayMethodExtension<ObjectVendorExtension> {
 
   public static final String NAME = "x-amazon-apigateway-integration";
 
@@ -162,7 +148,6 @@ public class ApiGatewayIntegrationExtension implements ApiGatewayExtension<Objec
 
   public ApiGatewayIntegrationExtension responses(@Nullable IntegrationResponsesExtension responses) {
     this.responses = Objects.requireNonNullElse(responses, new IntegrationResponsesExtension());
-    ;
     return this;
   }
 
