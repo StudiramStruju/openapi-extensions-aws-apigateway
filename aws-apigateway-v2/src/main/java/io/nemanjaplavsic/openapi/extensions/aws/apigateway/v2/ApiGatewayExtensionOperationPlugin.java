@@ -1,6 +1,6 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2;
 
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.ApiGatewayIntegrationExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.integration.ApiGatewayIntegrationExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.resolver.ApiGatewayIntegrationExtensionResolver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
