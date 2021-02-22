@@ -1,8 +1,8 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.security;
 
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.extension.security.ApiGatewaySecurityExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.security.extension.ApiGatewayAuthTypeExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.security.extension.ApiGatewayAuthorizerExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.security.extension.ApiGatewaySecurityExtension;
 import springfox.documentation.service.ApiKey;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class CognitoAuthorizerSecurityScheme extends ApiKey {
     super(name, keyname, passAs);
   }
 
-  public CognitoAuthorizerSecurityScheme(String name, String keyname, String passAs, ApiGatewayAuthTypeExtension authType, io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.security.extension.ApiGatewayAuthorizerExtension.ApiGatewayAuthorizerExtension authorizer) {
+  public CognitoAuthorizerSecurityScheme(String name, String keyname, String passAs, ApiGatewayAuthTypeExtension authType, ApiGatewayAuthorizerExtension authorizer) {
     super(name, keyname, passAs);
     this.extension(authType);
     this.extension(authorizer);
@@ -36,7 +36,7 @@ public class CognitoAuthorizerSecurityScheme extends ApiKey {
     return this;
   }
 
-  public CognitoAuthorizerSecurityScheme authorizer(ApiGatewayAuthorizerExtension.ApiGatewayAuthorizerExtension authorizer) {
+  public CognitoAuthorizerSecurityScheme authorizer(ApiGatewayAuthorizerExtension authorizer) {
     this.extension(authorizer);
     return this;
   }
