@@ -1,0 +1,15 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationCacheKeyParametersResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationCacheNamespaceResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationConnectionIdResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationConnectionTypeResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationCredentialsResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationHttpMethodResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationIntegrationTypeResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationPassTroughBehaviourResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationTimeoutInMillisResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationUriExtensionResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationRequestParametersResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationResponsesResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationUriExtensionResolver,\
+  io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.ApiGatewayIntegrationExtensionResolver
