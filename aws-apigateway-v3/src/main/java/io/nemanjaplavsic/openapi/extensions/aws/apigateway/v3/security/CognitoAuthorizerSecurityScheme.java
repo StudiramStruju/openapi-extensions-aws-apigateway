@@ -40,7 +40,12 @@ public class CognitoAuthorizerSecurityScheme extends SecurityScheme {
   }
 
   public CognitoAuthorizerSecurityScheme extension(ApiGatewaySecurityExtension<?> extension) {
-    this.addExtension(extension.getExtensionKey(), extension.getExtensionValue());
+    this.extension(extension.getExtensionKey(), extension.getExtensionValue());
+    return this;
+  }
+
+  public CognitoAuthorizerSecurityScheme extension(String name, Object value) {
+    this.addExtension(name, value);
     return this;
   }
 
