@@ -31,6 +31,12 @@ public class ApiGatewayIntegrationExtension implements ApiGatewayOperationExtens
 
   public static final String NAME = "x-amazon-apigateway-integration";
 
+  private IntegrationRequestParametersExtension requestParameters;
+
+  private IntegrationRequestTemplatesExtension requestTemplates;
+
+  private IntegrationResponsesExtension responses;
+
   @Nullable
   private IntegrationCacheKeyParametersExtension cacheKeyParameters;
   @Nullable
@@ -47,9 +53,6 @@ public class ApiGatewayIntegrationExtension implements ApiGatewayOperationExtens
   private IntegrationHttpMethodExtension httpMethod;
   @Nullable
   private IntegrationPassThroughBehaviorExtension passthroughBehavior;
-  private IntegrationRequestParametersExtension requestParameters;
-  private IntegrationRequestTemplatesExtension requestTemplates;
-  private IntegrationResponsesExtension responses;
   @Nullable
   private IntegrationTimeoutInMillisExtension timeoutInMillis;
   @Nullable
@@ -134,7 +137,7 @@ public class ApiGatewayIntegrationExtension implements ApiGatewayOperationExtens
     return this;
   }
 
-  public ApiGatewayIntegrationExtension httpMethod(@Nullable RequestMethod requestMethod) {
+  public ApiGatewayIntegrationExtension httpMethod(RequestMethod requestMethod) {
     this.httpMethod = new IntegrationHttpMethodExtension(requestMethod);
     return this;
   }

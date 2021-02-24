@@ -9,6 +9,9 @@ import java.util.StringJoiner;
 
 public class IntegrationRequestTemplateExtension implements IntegrationExtension<String> {
 
+  public static final String DEFAULT_TEMPLATE = "$input.body";
+  public static final String DEFAULT_JSON_TEMPLATE = "$input.json('$')";
+
   private final MediaType mediaType;
   private final String template;
 
@@ -18,7 +21,11 @@ public class IntegrationRequestTemplateExtension implements IntegrationExtension
 
   public IntegrationRequestTemplateExtension(MediaType mediaType, String template) {
     this.mediaType = Objects.requireNonNull(mediaType);
-    this.template = Objects.requireNonNull(template);
+    if (MediaType.APPLICATION_JSON.equals(this.mediaType)) {
+      this.template = Objects.requireNonNullElse(template, DEFAULT_JSON_TEMPLATE);
+    } else {
+      this.template = Objects.requireNonNullElse(template, DEFAULT_TEMPLATE);
+    }
   }
 
   public MediaType mediaType() {

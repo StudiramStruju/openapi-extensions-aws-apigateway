@@ -3,6 +3,7 @@ package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extensi
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationExtension;
 import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
 import java.util.Objects;
@@ -10,6 +11,8 @@ import java.util.StringJoiner;
 
 public class IntegrationResponseTemplateExtension implements IntegrationExtension<String> {
 
+  public static final String DEFAULT_TEMPLATE = "$input.body";
+  public static final String DEFAULT_JSON_TEMPLATE = "$input.json('$')";
 
   private final MediaType mediaType;
   private final String template;
@@ -18,9 +21,13 @@ public class IntegrationResponseTemplateExtension implements IntegrationExtensio
     this(MediaType.parseMediaType(mediaType), template);
   }
 
-  public IntegrationResponseTemplateExtension(MediaType mediaType, String template) {
+  public IntegrationResponseTemplateExtension(MediaType mediaType, @Nullable String template) {
     this.mediaType = Objects.requireNonNull(mediaType);
-    this.template = Objects.requireNonNullElse(template, "$input.json('$')");
+    if (MediaType.APPLICATION_JSON.equals(this.mediaType)) {
+      this.template = Objects.requireNonNullElse(template, DEFAULT_JSON_TEMPLATE);
+    } else {
+      this.template = Objects.requireNonNullElse(template, DEFAULT_TEMPLATE);
+    }
   }
 
   public MediaType mediaType() {

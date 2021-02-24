@@ -11,16 +11,18 @@ public class IntegrationHttpMethodExtension implements IntegrationExtension<Stri
 
   public static final String NAME = "httpMethod";
 
+  @Nullable
   private RequestMethod requestMethod;
+  @Nullable
   private HttpMethod httpMethod;
 
 
-  public IntegrationHttpMethodExtension(RequestMethod requestMethod) {
+  public IntegrationHttpMethodExtension(@Nullable RequestMethod requestMethod) {
     this(requestMethod, null);
   }
 
-  public IntegrationHttpMethodExtension(RequestMethod requestMethod, @Nullable HttpMethod httpMethod) {
-    this.requestMethod = Objects.requireNonNull(requestMethod, "Cannot create instance of IntegrationHttpMethodExtension with RequestMethod as null value!");
+  public IntegrationHttpMethodExtension(@Nullable RequestMethod requestMethod, @Nullable HttpMethod httpMethod) {
+    this.requestMethod = requestMethod;
     this.httpMethod = Objects.requireNonNullElse(httpMethod, HttpMethod.RESOLVE_FROM_METHOD);
   }
 
@@ -34,10 +36,12 @@ public class IntegrationHttpMethodExtension implements IntegrationExtension<Stri
     return this;
   }
 
+  @Nullable
   public HttpMethod httpMethod() {
     return httpMethod;
   }
 
+  @Nullable
   public RequestMethod requestMethod() {
     return requestMethod;
   }
