@@ -10,6 +10,7 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationIntegrationTypeResolver;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationPassTroughBehaviourResolver;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationRequestParametersResolver;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationRequestTemplatesResolver;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationResponsesResolver;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationTimeoutInMillisResolver;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationUriExtensionResolver;
@@ -33,6 +34,7 @@ public class ApiGatewayIntegrationExtensionResolver implements OperationExtensio
   private final IntegrationTimeoutInMillisResolver integrationTimeoutInMillisResolver;
   private final IntegrationUriExtensionResolver uriExtensionResolver;
   private final IntegrationRequestParametersResolver requestParametersResolver;
+  private final IntegrationRequestTemplatesResolver requestTemplatesResolver;
   private final IntegrationResponsesResolver responsesResolver;
 
   @Override
@@ -49,6 +51,7 @@ public class ApiGatewayIntegrationExtensionResolver implements OperationExtensio
         .timeoutInMillis(integrationTimeoutInMillisResolver.resolve(operation, handlerMethod))
         .uri(uriExtensionResolver.resolve(operation, handlerMethod))
         .requestParameters(requestParametersResolver.resolve(operation, handlerMethod))
+        .requestTemplates(requestTemplatesResolver.resolve(operation, handlerMethod))
         .responses(responsesResolver.resolve(operation, handlerMethod));
   }
 }

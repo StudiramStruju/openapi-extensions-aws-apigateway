@@ -4,8 +4,8 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations.Integrati
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations.IntegrationResponseParameter;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations.IntegrationResponseTemplate;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations.IntegrationResponses;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationResponseParameterSource;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationResponseParameterType;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ResponseParameterSource;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.operation.extension.integration.IntegrationResponsesExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.operation.extension.integration.response.IntegrationResponseExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v2.operation.extension.integration.response.IntegrationResponseParameterExtension;
@@ -107,7 +107,7 @@ public class IntegrationResponsesResolver implements IntegrationResolver<Integra
     if (Objects.isNull(headerName)) {
       return null;
     }
-    return new IntegrationResponseParameterExtension(ResponseParameterSource.INTEGRATION, headerName)
+    return new IntegrationResponseParameterExtension(IntegrationResponseParameterSource.INTEGRATION, headerName)
         .integrationParameterType(IntegrationResponseParameterType.HEADER)
         .integrationParameterName(headerName);
   }
@@ -118,7 +118,7 @@ public class IntegrationResponsesResolver implements IntegrationResolver<Integra
     if (Objects.isNull(headerName)) {
       return null;
     }
-    return new IntegrationResponseParameterExtension(ResponseParameterSource.INTEGRATION, headerName)
+    return new IntegrationResponseParameterExtension(IntegrationResponseParameterSource.INTEGRATION, headerName)
         .integrationParameterType(IntegrationResponseParameterType.HEADER)
         .integrationParameterName(headerName);
   }

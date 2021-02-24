@@ -36,7 +36,14 @@ public class IntegrationHttpMethodResolver implements IntegrationResolver<Integr
         .orElse(null);
 
     final String methodName = handlerMethod.getBeanType().getSimpleName() + "#" + handlerMethod.getMethod().getName();
-    final RequestMethodEvaluation evaluation = extractRequestMethod(handlerMethod, rme.get(methodName));
+
+    final RequestMethodEvaluation evaluation;
+    try {
+      evaluation = extractRequestMethod(handlerMethod, rme.get(methodName));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      return new IntegrationHttpMethodExtension(null);
+    }
 
     if (evaluation.totalCount() > 2) {
       final String errorMessage = String.format(
@@ -44,7 +51,8 @@ public class IntegrationHttpMethodResolver implements IntegrationResolver<Integr
           handlerMethod.getMethod().getName(),
           operation.getOperationId()
       );
-      throw new RuntimeException(errorMessage);
+      log.error(errorMessage);
+      return new IntegrationHttpMethodExtension(null);
     }
 
     if (rme.containsKey(methodName) && evaluation.done()) {

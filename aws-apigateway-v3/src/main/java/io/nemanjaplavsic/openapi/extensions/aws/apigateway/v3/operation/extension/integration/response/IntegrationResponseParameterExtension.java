@@ -1,7 +1,7 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response;
 
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationResponseParameterSource;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationResponseParameterType;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ResponseParameterSource;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationExtension;
 import org.springframework.lang.Nullable;
 
@@ -11,7 +11,7 @@ import java.util.StringJoiner;
 public class IntegrationResponseParameterExtension implements IntegrationExtension<String> {
 
 
-  private final ResponseParameterSource source;
+  private final IntegrationResponseParameterSource source;
   private final String methodHeaderName;
   @Nullable
   private IntegrationResponseParameterType integrationParameterType;
@@ -20,12 +20,12 @@ public class IntegrationResponseParameterExtension implements IntegrationExtensi
   @Nullable
   private String staticValue;
 
-  public IntegrationResponseParameterExtension(ResponseParameterSource source, String methodHeaderName) {
+  public IntegrationResponseParameterExtension(IntegrationResponseParameterSource source, String methodHeaderName) {
     this.source = source;
     this.methodHeaderName = methodHeaderName;
   }
 
-  public IntegrationResponseParameterExtension(ResponseParameterSource source, String methodHeaderName, @Nullable IntegrationResponseParameterType integrationParameterType, @Nullable String integrationParameterName, @Nullable String staticValue) {
+  public IntegrationResponseParameterExtension(IntegrationResponseParameterSource source, String methodHeaderName, @Nullable IntegrationResponseParameterType integrationParameterType, @Nullable String integrationParameterName, @Nullable String staticValue) {
     this.source = source;
     this.methodHeaderName = methodHeaderName;
     this.integrationParameterType = integrationParameterType;
@@ -48,7 +48,7 @@ public class IntegrationResponseParameterExtension implements IntegrationExtensi
     return this;
   }
 
-  public ResponseParameterSource source() {
+  public IntegrationResponseParameterSource source() {
     return source;
   }
 
@@ -82,7 +82,7 @@ public class IntegrationResponseParameterExtension implements IntegrationExtensi
 
   @Override
   public String getExtensionValue() {
-    if (ResponseParameterSource.INTEGRATION.equals(source)) {
+    if (IntegrationResponseParameterSource.INTEGRATION.equals(source)) {
       return String.format("integration.response.%s.%s", integrationParameterType.key(), integrationParameterName);
     } else {
       return String.format("%s", staticValue);
@@ -94,7 +94,7 @@ public class IntegrationResponseParameterExtension implements IntegrationExtensi
     try {
       Objects.requireNonNull(source);
       Objects.requireNonNull(methodHeaderName);
-      if (ResponseParameterSource.INTEGRATION.equals(source)) {
+      if (IntegrationResponseParameterSource.INTEGRATION.equals(source)) {
         Objects.requireNonNull(integrationParameterType);
         Objects.requireNonNull(integrationParameterType.key());
         Objects.requireNonNull(integrationParameterName);

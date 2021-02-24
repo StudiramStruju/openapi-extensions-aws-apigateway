@@ -29,7 +29,7 @@ public class IntegrationRequestParameterExtension implements IntegrationExtensio
   public IntegrationRequestParameterExtension(RequestParameterSource source,
                                               IntegrationRequestParameterType integrationParameterType,
                                               String integrationParameterName) {
-    this(source, integrationParameterType, integrationParameterName, null, null, null, null, null);
+    this(source, integrationParameterType, integrationParameterName, MethodRequestParameterType.matching(integrationParameterType), integrationParameterName, null, null, null);
   }
 
   public IntegrationRequestParameterExtension(RequestParameterSource source,
