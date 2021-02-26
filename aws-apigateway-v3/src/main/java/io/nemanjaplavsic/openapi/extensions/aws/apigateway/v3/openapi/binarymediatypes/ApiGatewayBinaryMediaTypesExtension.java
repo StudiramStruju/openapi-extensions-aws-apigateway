@@ -1,6 +1,7 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.openapi.binarymediatypes;
 
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.openapi.OpenApiGatewayExtension;
+import org.springframework.http.MediaType;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -27,6 +28,11 @@ public class ApiGatewayBinaryMediaTypesExtension implements OpenApiGatewayExtens
 
   public ApiGatewayBinaryMediaTypesExtension type(String type) {
     this.types.add(type);
+    return this;
+  }
+
+  public ApiGatewayBinaryMediaTypesExtension type(MediaType type) {
+    this.types.add(type.toString());
     return this;
   }
 

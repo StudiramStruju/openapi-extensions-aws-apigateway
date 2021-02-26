@@ -5,6 +5,7 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations.Integrati
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationRequestTemplatesExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.request.IntegrationRequestTemplateExtension;
 import io.swagger.v3.oas.models.Operation;
+import org.springframework.http.MediaType;
 import org.springframework.web.method.HandlerMethod;
 
 import java.util.ArrayList;
@@ -23,12 +24,20 @@ public class IntegrationRequestTemplatesResolver implements IntegrationResolver<
     // Default request template
     Optional.ofNullable(operation.getRequestBody())
         .flatMap(requestBody -> Optional.ofNullable(requestBody.getContent()))
-        .ifPresent(content -> content.forEach((mediaTypeValue, mediaType) ->
-            extension.template(new IntegrationRequestTemplateExtension(mediaTypeValue, null))
+        .ifPresent(content -> content.forEach((mediaTypeValue, mediaType) -> {
+              if (MediaType.APPLICATION_JSON_VALUE.equals(mediaTypeValue)) {
+                extension.template(new IntegrationRequestTemplateExtension(
+                    MediaType.APPLICATION_JSON_VALUE,
+                    IntegrationRequestTemplateExtension.DEFAULT_JSON_TEMPLATE));
+              } else {
+                extension.template(new IntegrationRequestTemplateExtension(mediaTypeValue, IntegrationRequestTemplateExtension.DEFAULT_TEMPLATE));
+              }
+            }
         ));
 
     // Resolve Annotation parameters
-    final List<IntegrationRequestTemplateExtension> annotationParameters = Optional.ofNullable(handlerMethod.getMethodAnnotation(IntegrationRequestTemplates.class))
+    final List<IntegrationRequestTemplateExtension> annotationParameters = Optional.ofNullable(
+        handlerMethod.getMethodAnnotation(IntegrationRequestTemplates.class))
         .map(templates -> Arrays.stream(templates.value())
             .map(this::from)
             .filter(Objects::nonNull)
