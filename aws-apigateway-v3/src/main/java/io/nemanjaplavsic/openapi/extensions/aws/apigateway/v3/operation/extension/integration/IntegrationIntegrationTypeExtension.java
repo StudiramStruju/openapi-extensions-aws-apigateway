@@ -5,7 +5,7 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.Integrati
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationIntegrationTypeExtension implements IntegrationExtension<String> {
+public class IntegrationIntegrationTypeExtension implements ApiGatewayIntegrationExtension<String> {
 
   public static final String NAME = "type";
 
@@ -15,7 +15,7 @@ public class IntegrationIntegrationTypeExtension implements IntegrationExtension
     this.integrationType = integrationType;
   }
 
-  public IntegrationType integrationType() {
+  public IntegrationType getIntegrationType() {
     return integrationType;
   }
 

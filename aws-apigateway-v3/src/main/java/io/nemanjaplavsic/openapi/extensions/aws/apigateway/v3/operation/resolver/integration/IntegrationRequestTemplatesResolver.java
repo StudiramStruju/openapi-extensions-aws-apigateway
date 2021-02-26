@@ -5,8 +5,6 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations.Integrati
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationRequestTemplatesExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.request.IntegrationRequestTemplateExtension;
 import io.swagger.v3.oas.models.Operation;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 
 import java.util.ArrayList;
@@ -16,8 +14,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Slf4j
-@Component
 public class IntegrationRequestTemplatesResolver implements IntegrationResolver<IntegrationRequestTemplatesExtension> {
 
   @Override

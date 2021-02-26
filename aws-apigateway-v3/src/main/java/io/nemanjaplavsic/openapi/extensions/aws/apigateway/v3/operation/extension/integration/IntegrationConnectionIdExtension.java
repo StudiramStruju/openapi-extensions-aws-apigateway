@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationConnectionIdExtension implements IntegrationExtension<String> {
+public class IntegrationConnectionIdExtension implements ApiGatewayIntegrationExtension<String> {
 
   public static final String NAME = "connectionId";
 
@@ -18,7 +18,7 @@ public class IntegrationConnectionIdExtension implements IntegrationExtension<St
   }
 
   @Nullable
-  public String connectionId() {
+  public String getConnectionId() {
     return connectionId;
   }
 
@@ -29,7 +29,7 @@ public class IntegrationConnectionIdExtension implements IntegrationExtension<St
 
   @Nullable
   public String getExtensionValue() {
-    return connectionId;
+    return getConnectionId();
   }
 
   @Override

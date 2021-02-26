@@ -6,17 +6,19 @@ import org.springframework.util.StringUtils;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationCacheNamespaceExtension implements IntegrationExtension<String> {
+public class IntegrationCacheNamespaceExtension implements ApiGatewayIntegrationExtension<String> {
 
   public static final String NAME = "cacheNamespace";
 
+  @Nullable
   private final String cacheNamespace;
 
   public IntegrationCacheNamespaceExtension(@Nullable String cacheNamespace) {
-    this.cacheNamespace = Objects.requireNonNull(cacheNamespace, "Cannot create instance of IntegrationCacheNamespaceExtension with null value!");
+    this.cacheNamespace = cacheNamespace;
   }
 
-  public String cacheNamespace() {
+  @Nullable
+  public String getCacheNamespace() {
     return cacheNamespace;
   }
 
@@ -25,8 +27,9 @@ public class IntegrationCacheNamespaceExtension implements IntegrationExtension<
     return NAME;
   }
 
+  @Nullable
   public String getExtensionValue() {
-    return cacheNamespace;
+    return getCacheNamespace();
   }
 
   @Override

@@ -5,18 +5,18 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.configuration.ApiGate
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ContentHandling;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationContentHandlingExtension;
 import io.swagger.v3.oas.models.Operation;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 
 import java.util.Objects;
 import java.util.Optional;
 
-@Component
-@RequiredArgsConstructor
 public class IntegrationContentHandlingResolver implements IntegrationResolver<IntegrationContentHandlingExtension> {
 
   private final ApiGatewayServiceProperties properties;
+
+  public IntegrationContentHandlingResolver(ApiGatewayServiceProperties properties) {
+    this.properties = properties;
+  }
 
   @Override
   public IntegrationContentHandlingExtension resolve(Operation operation, HandlerMethod handlerMethod) {

@@ -3,7 +3,7 @@ package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extensi
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationStatusCodeExtension implements IntegrationExtension<String> {
+public class IntegrationStatusCodeExtension implements ApiGatewayIntegrationExtension<String> {
 
   public static final String NAME = "statusCode";
 
@@ -13,7 +13,7 @@ public class IntegrationStatusCodeExtension implements IntegrationExtension<Stri
     this.statusCode = statusCode;
   }
 
-  public Integer statusCode() {
+  public Integer getStatusCode() {
     return statusCode;
   }
 

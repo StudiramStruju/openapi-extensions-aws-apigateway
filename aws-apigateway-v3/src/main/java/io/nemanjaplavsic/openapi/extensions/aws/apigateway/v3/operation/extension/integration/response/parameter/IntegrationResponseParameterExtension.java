@@ -1,14 +1,15 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.parameter;
 
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationResponseParameterSource;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationResponseParameterType;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ConvertableExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ValidatableExtension;
 import org.springframework.lang.Nullable;
 
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationResponseParameterExtension implements IntegrationExtension<String> {
+public class IntegrationResponseParameterExtension implements ConvertableExtension<String>, ValidatableExtension {
 
 
   private final IntegrationResponseParameterSource source;
@@ -48,39 +49,37 @@ public class IntegrationResponseParameterExtension implements IntegrationExtensi
     return this;
   }
 
-  public IntegrationResponseParameterSource source() {
+  public IntegrationResponseParameterSource getSource() {
     return source;
   }
 
-  public String methodHeaderName() {
+  public String getMethodHeaderName() {
     return methodHeaderName;
   }
 
   @Nullable
-  public IntegrationResponseParameterType integrationParameterType() {
+  public IntegrationResponseParameterType getIntegrationParameterType() {
     return integrationParameterType;
   }
 
   @Nullable
-  public String integrationParameterName() {
+  public String getIntegrationParameterName() {
     return integrationParameterName;
   }
 
   @Nullable
-  public String staticValue() {
+  public String getStaticValue() {
     return staticValue;
   }
 
   public boolean matches(IntegrationResponseParameterExtension parameterExtension) {
-    return Objects.equals(methodHeaderName, parameterExtension.methodHeaderName());
+    return Objects.equals(methodHeaderName, parameterExtension.getMethodHeaderName());
   }
 
-  @Override
   public String getExtensionKey() {
     return String.format("method.response.header.%s", methodHeaderName);
   }
 
-  @Override
   public String getExtensionValue() {
     if (IntegrationResponseParameterSource.INTEGRATION.equals(source)) {
       return String.format("integration.response.%s.%s", integrationParameterType.key(), integrationParameterName);
@@ -89,7 +88,6 @@ public class IntegrationResponseParameterExtension implements IntegrationExtensi
     }
   }
 
-  @Override
   public boolean isValid() {
     try {
       Objects.requireNonNull(source);

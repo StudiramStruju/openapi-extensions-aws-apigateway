@@ -22,7 +22,7 @@ public class IntegrationPassTroughBehaviourResolver implements IntegrationResolv
         .transform(ApiGatewayIntegration::passthroughBehavior)
         .orNull();
 
-    final PassThroughBehavior passThroughBehaviorProperties = properties.getPassthroughBehavior();
+    final PassThroughBehavior passThroughBehaviorProperties = properties.getPassThroughBehavior();
 
     if (Objects.nonNull(passThroughBehavior) && Objects.nonNull(passThroughBehavior.key())) {
       return new IntegrationPassThroughBehaviorExtension(passThroughBehavior);

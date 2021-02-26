@@ -3,15 +3,17 @@ package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extensi
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationRequestParameterType;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.MethodRequestParameterType;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.RequestParameterSource;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationExtension;
-import lombok.extern.slf4j.Slf4j;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ConvertableExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ValidatableExtension;
+import org.slf4j.Logger;
 import org.springframework.lang.Nullable;
 
 import java.util.Objects;
 import java.util.StringJoiner;
 
-@Slf4j
-public class IntegrationRequestParameterExtension implements IntegrationExtension<String> {
+public class IntegrationRequestParameterExtension implements ConvertableExtension<String>, ValidatableExtension {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(IntegrationRequestParameterExtension.class);
 
   private final RequestParameterSource source;
   private final IntegrationRequestParameterType integrationParameterType;
@@ -40,9 +42,9 @@ public class IntegrationRequestParameterExtension implements IntegrationExtensio
                                               @Nullable String contextVariableName,
                                               @Nullable String stageVariableName,
                                               @Nullable String staticValueName) {
-    this.source = Objects.requireNonNull(source, "Cannot create instance of IntegrationRequestParameterExtension with source as null value!");
-    this.integrationParameterType = Objects.requireNonNull(integrationParameterType, "Cannot create instance of IntegrationRequestParameterExtension with integrationParameterType as null value!");
-    this.integrationParameterName = Objects.requireNonNull(integrationParameterName, "Cannot create instance of IntegrationRequestParameterExtension with integrationParameterName as null value!");
+    this.source = source;
+    this.integrationParameterType = integrationParameterType;
+    this.integrationParameterName = integrationParameterName;
     this.methodParameterType = Objects.requireNonNullElse(methodParameterType, MethodRequestParameterType.NONE);
     this.methodParameterName = methodParameterName;
     this.contextVariableName = contextVariableName;
@@ -75,48 +77,47 @@ public class IntegrationRequestParameterExtension implements IntegrationExtensio
     return this;
   }
 
-  public RequestParameterSource source() {
+  public RequestParameterSource getSource() {
     return source;
   }
 
-  public IntegrationRequestParameterType integrationParameterType() {
+  public IntegrationRequestParameterType getIntegrationParameterType() {
     return integrationParameterType;
   }
 
-  public String integrationParameterName() {
+  public String getIntegrationParameterName() {
     return integrationParameterName;
   }
 
-  public MethodRequestParameterType methodParameterType() {
+  public MethodRequestParameterType getMethodParameterType() {
     return methodParameterType;
   }
 
   @Nullable
-  public String methodParameterName() {
+  public String getMethodParameterName() {
     return methodParameterName;
   }
 
   @Nullable
-  public String contextVariableName() {
+  public String getContextVariableName() {
     return contextVariableName;
   }
 
   @Nullable
-  public String stageVariableName() {
+  public String getStageVariableName() {
     return stageVariableName;
   }
 
   @Nullable
-  public String staticValueName() {
+  public String getStaticValueName() {
     return staticValueName;
   }
 
   public boolean matches(IntegrationRequestParameterExtension parameterExtension) {
-    return integrationParameterType.equals(parameterExtension.integrationParameterType())
-        && integrationParameterName.equals(parameterExtension.integrationParameterName());
+    return integrationParameterType.equals(parameterExtension.getIntegrationParameterType())
+        && integrationParameterName.equals(parameterExtension.getIntegrationParameterName());
   }
 
-  @Override
   public String getExtensionKey() {
     return String.format("integration.request.%s.%s", integrationParameterType.key(), integrationParameterName);
   }
@@ -136,7 +137,6 @@ public class IntegrationRequestParameterExtension implements IntegrationExtensio
     }
   }
 
-  @Override
   public boolean isValid() {
     try {
       Objects.requireNonNull(source);

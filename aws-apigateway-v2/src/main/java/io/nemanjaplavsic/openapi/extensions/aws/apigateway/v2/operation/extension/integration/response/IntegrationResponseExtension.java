@@ -14,11 +14,11 @@ import java.util.regex.Pattern;
 
 public class IntegrationResponseExtension implements IntegrationExtension<ObjectVendorExtension> {
 
+  private final IntegrationResponseTemplatesExtension templates;
+  private final IntegrationResponseParametersExtension parameters;
   private String responseStatusPattern;
   private IntegrationStatusCodeExtension statusCode;
   private IntegrationContentHandlingExtension contentHandling;
-  private final IntegrationResponseTemplatesExtension templates;
-  private final IntegrationResponseParametersExtension parameters;
 
   public IntegrationResponseExtension(String responseStatusPattern,
                                       int statusCode) {

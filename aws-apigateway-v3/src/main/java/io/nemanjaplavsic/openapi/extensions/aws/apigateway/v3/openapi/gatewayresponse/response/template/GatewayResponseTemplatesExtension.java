@@ -1,6 +1,5 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.openapi.gatewayresponse.response.template;
 
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationExtension;
 import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
@@ -9,24 +8,24 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationResponseTemplatesExtension implements IntegrationExtension<LinkedHashMap<String, String>> {
+public class GatewayResponseTemplatesExtension {
 
   public static final String NAME = "responseTemplates";
 
-  private final List<IntegrationResponseTemplateExtension> templates;
+  private final List<GatewayResponseTemplateExtension> templates;
 
-  public IntegrationResponseTemplatesExtension() {
+  public GatewayResponseTemplatesExtension() {
     this(null);
   }
 
-  public IntegrationResponseTemplatesExtension(@Nullable List<IntegrationResponseTemplateExtension> templates) {
+  public GatewayResponseTemplatesExtension(@Nullable List<GatewayResponseTemplateExtension> templates) {
     this.templates = Objects.requireNonNullElse(templates, new ArrayList<>());
   }
 
-  public IntegrationResponseTemplatesExtension template(IntegrationResponseTemplateExtension template) {
+  public GatewayResponseTemplatesExtension template(GatewayResponseTemplateExtension template) {
     if (template.isValid()) {
       templates.stream()
-          .filter(IntegrationResponseTemplateExtension::isValid)
+          .filter(GatewayResponseTemplateExtension::isValid)
           .filter(existing -> existing.matches(template))
           .findFirst()
           .ifPresentOrElse(
@@ -39,30 +38,27 @@ public class IntegrationResponseTemplatesExtension implements IntegrationExtensi
     return this;
   }
 
-  public IntegrationResponseTemplatesExtension templates(List<IntegrationResponseTemplateExtension> templates) {
+  public GatewayResponseTemplatesExtension templates(List<GatewayResponseTemplateExtension> templates) {
     templates.forEach(this::template);
     return this;
   }
 
-  public List<IntegrationResponseTemplateExtension> templates() {
+  public List<GatewayResponseTemplateExtension> getTemplates() {
     return templates;
   }
 
-  @Override
   public String getExtensionKey() {
     return NAME;
   }
 
-  @Override
   public LinkedHashMap<String, String> getExtensionValue() {
     LinkedHashMap<String, String> extension = new LinkedHashMap<>();
     templates.stream()
-        .filter(IntegrationResponseTemplateExtension::isValid)
+        .filter(GatewayResponseTemplateExtension::isValid)
         .forEach(property -> extension.put(property.getExtensionKey(), property.getExtensionValue()));
     return extension;
   }
 
-  @Override
   public boolean isValid() {
     try {
       Objects.requireNonNull(templates);
@@ -75,8 +71,8 @@ public class IntegrationResponseTemplatesExtension implements IntegrationExtensi
   @Override
   public boolean equals(Object object) {
     if (this == object) return true;
-    if (!(object instanceof IntegrationResponseTemplatesExtension)) return false;
-    IntegrationResponseTemplatesExtension that = (IntegrationResponseTemplatesExtension) object;
+    if (!(object instanceof GatewayResponseTemplatesExtension)) return false;
+    GatewayResponseTemplatesExtension that = (GatewayResponseTemplatesExtension) object;
     return templates.equals(that.templates);
   }
 
@@ -87,7 +83,7 @@ public class IntegrationResponseTemplatesExtension implements IntegrationExtensi
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", IntegrationResponseTemplatesExtension.class.getSimpleName() + "[", "]")
+    return new StringJoiner(", ", GatewayResponseTemplatesExtension.class.getSimpleName() + "[", "]")
         .add("templates=" + templates)
         .toString();
   }

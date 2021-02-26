@@ -1,9 +1,14 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response;
 
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ContentHandling;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ConvertableExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ValidatableExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationContentHandlingExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationStatusCodeExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.parameter.IntegrationResponseParameterExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.parameter.IntegrationResponseParametersExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.template.IntegrationResponseTemplateExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.template.IntegrationResponseTemplatesExtension;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
@@ -12,13 +17,13 @@ import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 
-public class IntegrationResponseExtension implements IntegrationExtension<LinkedHashMap<String, Object>> {
+public class IntegrationResponseExtension implements ConvertableExtension<LinkedHashMap<String, Object>>, ValidatableExtension {
 
+  private final IntegrationResponseTemplatesExtension templates;
+  private final IntegrationResponseParametersExtension parameters;
   private String responseStatusPattern;
   private IntegrationStatusCodeExtension statusCode;
   private IntegrationContentHandlingExtension contentHandling;
-  private final IntegrationResponseTemplatesExtension templates;
-  private final IntegrationResponseParametersExtension parameters;
 
   public IntegrationResponseExtension(String responseStatusPattern,
                                       int statusCode) {
@@ -68,7 +73,7 @@ public class IntegrationResponseExtension implements IntegrationExtension<Linked
   }
 
   public IntegrationResponseExtension templates(IntegrationResponseTemplatesExtension templates) {
-    this.templates.templates(templates.templates());
+    this.templates.templates(templates.getTemplates());
     return this;
   }
 
@@ -78,7 +83,7 @@ public class IntegrationResponseExtension implements IntegrationExtension<Linked
   }
 
   public IntegrationResponseExtension parameters(IntegrationResponseParametersExtension parameters) {
-    this.parameters.parameters(parameters.parameters());
+    this.parameters.parameters(parameters.getParameters());
     return this;
   }
 
@@ -87,43 +92,41 @@ public class IntegrationResponseExtension implements IntegrationExtension<Linked
     return this;
   }
 
-  public String responseStatusPattern() {
+  public String getResponseStatusPattern() {
     return responseStatusPattern;
   }
 
-  public IntegrationStatusCodeExtension statusCode() {
+  public IntegrationStatusCodeExtension getStatusCode() {
     return statusCode;
   }
 
-  public IntegrationContentHandlingExtension contentHandling() {
+  public IntegrationContentHandlingExtension getContentHandling() {
     return contentHandling;
   }
 
-  public IntegrationResponseTemplatesExtension templates() {
+  public IntegrationResponseTemplatesExtension getTemplates() {
     return templates;
   }
 
-  public IntegrationResponseParametersExtension parameters() {
+  public IntegrationResponseParametersExtension getParameters() {
     return parameters;
   }
 
   public boolean matches(IntegrationResponseExtension response) {
-    return Pattern.matches(responseStatusPattern, response.responseStatusPattern());
+    return Pattern.matches(responseStatusPattern, response.getResponseStatusPattern());
   }
 
   public IntegrationResponseExtension update(IntegrationResponseExtension response) {
-    return this.statusCode(response.statusCode())
-        .contentHandling(response.contentHandling())
-        .templates(response.templates())
-        .parameters(response.parameters());
+    return this.statusCode(response.getStatusCode())
+        .contentHandling(response.getContentHandling())
+        .templates(response.getTemplates())
+        .parameters(response.getParameters());
   }
 
-  @Override
   public String getExtensionKey() {
-    return responseStatusPattern;
+    return getResponseStatusPattern();
   }
 
-  @Override
   public LinkedHashMap<String, Object> getExtensionValue() {
     LinkedHashMap<String, Object> extension = new LinkedHashMap<>();
     extension.put(statusCode.getExtensionKey(), statusCode.getExtensionValue());
@@ -133,7 +136,6 @@ public class IntegrationResponseExtension implements IntegrationExtension<Linked
     return extension;
   }
 
-  @Override
   public boolean isValid() {
     try {
       Objects.requireNonNull(responseStatusPattern);

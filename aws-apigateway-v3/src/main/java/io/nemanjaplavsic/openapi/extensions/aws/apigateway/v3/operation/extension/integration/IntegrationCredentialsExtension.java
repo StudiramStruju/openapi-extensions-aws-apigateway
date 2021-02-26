@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationCredentialsExtension implements IntegrationExtension<String> {
+public class IntegrationCredentialsExtension implements ApiGatewayIntegrationExtension<String> {
 
   public static final String NAME = "credentials";
 
@@ -18,7 +18,7 @@ public class IntegrationCredentialsExtension implements IntegrationExtension<Str
   }
 
   @Nullable
-  public String credentials() {
+  public String getCredentials() {
     return credentials;
   }
 
@@ -28,7 +28,7 @@ public class IntegrationCredentialsExtension implements IntegrationExtension<Str
   }
 
   public String getExtensionValue() {
-    return credentials;
+    return getCredentials();
   }
 
   @Override

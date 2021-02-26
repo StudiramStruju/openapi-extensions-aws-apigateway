@@ -5,7 +5,7 @@ import org.springframework.util.StringUtils;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationUriExtension implements IntegrationExtension<String> {
+public class IntegrationUriExtension implements ApiGatewayIntegrationExtension<String> {
 
   public static final String NAME = "uri";
 
@@ -20,7 +20,7 @@ public class IntegrationUriExtension implements IntegrationExtension<String> {
     return this;
   }
 
-  public String uri() {
+  public String getUri() {
     return uri;
   }
 
@@ -30,7 +30,7 @@ public class IntegrationUriExtension implements IntegrationExtension<String> {
   }
 
   public String getExtensionValue() {
-    return uri;
+    return getUri();
   }
 
   @Override

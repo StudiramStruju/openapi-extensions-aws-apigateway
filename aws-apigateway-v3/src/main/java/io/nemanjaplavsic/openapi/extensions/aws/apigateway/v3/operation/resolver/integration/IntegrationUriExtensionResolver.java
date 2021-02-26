@@ -4,9 +4,6 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations.ApiGatewa
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.configuration.ApiGatewayServiceProperties;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationUriExtension;
 import io.swagger.v3.oas.models.Operation;
-import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +17,13 @@ import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
 
-@Component
-@RequiredArgsConstructor
-@EnableConfigurationProperties(ApiGatewayServiceProperties.class)
 public class IntegrationUriExtensionResolver implements IntegrationResolver<IntegrationUriExtension> {
 
   private final ApiGatewayServiceProperties properties;
+
+  public IntegrationUriExtensionResolver(ApiGatewayServiceProperties properties) {
+    this.properties = properties;
+  }
 
   @Override
   public IntegrationUriExtension resolve(Operation operation, HandlerMethod handlerMethod) {

@@ -1,6 +1,7 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.parameter;
 
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ConvertableExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ValidatableExtension;
 import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
@@ -9,32 +10,32 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationResponseParametersExtension implements IntegrationExtension<LinkedHashMap<String, String>> {
+public class IntegrationResponseParametersExtension implements ConvertableExtension<LinkedHashMap<String, String>>, ValidatableExtension {
 
   public static final String NAME = "responseParameters";
 
-  private final List<IntegrationResponseParameterExtension> responseParameters;
+  private final List<IntegrationResponseParameterExtension> parameters;
 
   public IntegrationResponseParametersExtension() {
     this(null);
   }
 
-  public IntegrationResponseParametersExtension(@Nullable List<IntegrationResponseParameterExtension> responseParameters) {
-    this.responseParameters = Objects.requireNonNullElse(responseParameters, new ArrayList<>());
+  public IntegrationResponseParametersExtension(@Nullable List<IntegrationResponseParameterExtension> parameters) {
+    this.parameters = Objects.requireNonNullElse(parameters, new ArrayList<>());
   }
 
   public IntegrationResponseParametersExtension parameter(IntegrationResponseParameterExtension parameter) {
     if (parameter.isValid()) {
-      responseParameters.stream()
+      parameters.stream()
           .filter(IntegrationResponseParameterExtension::isValid)
           .filter(existing -> existing.matches(parameter))
           .findFirst()
           .ifPresentOrElse(
               existing -> {
-                responseParameters.remove(existing);
-                responseParameters.add(parameter);
+                parameters.remove(existing);
+                parameters.add(parameter);
               },
-              () -> responseParameters.add(parameter));
+              () -> parameters.add(parameter));
     }
     return this;
   }
@@ -44,30 +45,26 @@ public class IntegrationResponseParametersExtension implements IntegrationExtens
     return this;
   }
 
-  public List<IntegrationResponseParameterExtension> parameters() {
-    return responseParameters;
+  public List<IntegrationResponseParameterExtension> getParameters() {
+    return parameters;
   }
 
-
-  @Override
   public String getExtensionKey() {
     return NAME;
   }
 
-  @Override
   public LinkedHashMap<String, String> getExtensionValue() {
     LinkedHashMap<String, String> extension = new LinkedHashMap<>();
-    responseParameters.stream()
+    parameters.stream()
         .filter(IntegrationResponseParameterExtension::isValid)
         .forEach(property -> extension.put(property.getExtensionKey(), property.getExtensionValue()));
     return extension;
   }
 
-  @Override
   public boolean isValid() {
     try {
-      Objects.requireNonNull(responseParameters);
-      return !responseParameters.isEmpty();
+      Objects.requireNonNull(parameters);
+      return !parameters.isEmpty();
     } catch (NullPointerException e) {
       return false;
     }
@@ -78,18 +75,18 @@ public class IntegrationResponseParametersExtension implements IntegrationExtens
     if (this == object) return true;
     if (!(object instanceof IntegrationResponseParametersExtension)) return false;
     IntegrationResponseParametersExtension that = (IntegrationResponseParametersExtension) object;
-    return responseParameters.equals(that.responseParameters);
+    return parameters.equals(that.parameters);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(responseParameters);
+    return Objects.hash(parameters);
   }
 
   @Override
   public String toString() {
     return new StringJoiner(", ", IntegrationResponseParametersExtension.class.getSimpleName() + "[", "]")
-        .add("responseParameters=" + responseParameters)
+        .add("responseParameters=" + parameters)
         .toString();
   }
 }

@@ -2,13 +2,13 @@ package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extensi
 
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ConnectionType;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ContentHandling;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.OperationApiGatewayExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationCacheKeyParametersExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationCacheNamespaceExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationConnectionIdExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationConnectionTypeExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationContentHandlingExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationCredentialsExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationHttpMethodExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationIntegrationTypeExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationPassThroughBehaviorExtension;
@@ -27,7 +27,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class ApiGatewayIntegrationExtension implements ApiGatewayOperationExtension<LinkedHashMap<String, Object>> {
+public class ApiGatewayIntegrationExtension implements OperationApiGatewayExtension<LinkedHashMap<String, Object>> {
 
   public static final String NAME = "x-amazon-apigateway-integration";
 
@@ -182,70 +182,70 @@ public class ApiGatewayIntegrationExtension implements ApiGatewayOperationExtens
     return this;
   }
 
-  @Nullable
-  public IntegrationCacheKeyParametersExtension cacheKeyParameters() {
-    return cacheKeyParameters;
-  }
-
-  @Nullable
-  public IntegrationCacheNamespaceExtension cacheNamespace() {
-    return cacheNamespace;
-  }
-
-  @Nullable
-  public IntegrationConnectionIdExtension connectionId() {
-    return connectionId;
-  }
-
-  @Nullable
-  public IntegrationConnectionTypeExtension connectionType() {
-    return connectionType;
-  }
-
-  @Nullable
-  public IntegrationCredentialsExtension credentials() {
-    return credentials;
-  }
-
-  @Nullable
-  public IntegrationContentHandlingExtension contentHandling() {
-    return contentHandling;
-  }
-
-  @Nullable
-  public IntegrationHttpMethodExtension httpMethod() {
-    return httpMethod;
-  }
-
-  @Nullable
-  public IntegrationPassThroughBehaviorExtension passthroughBehavior() {
-    return passthroughBehavior;
-  }
-
-  public IntegrationRequestParametersExtension requestParameters() {
+  public IntegrationRequestParametersExtension getRequestParameters() {
     return requestParameters;
   }
 
-  public IntegrationRequestTemplatesExtension requestTemplates() {
+  public IntegrationRequestTemplatesExtension getRequestTemplates() {
     return requestTemplates;
   }
 
-  public IntegrationResponsesExtension responses() {
+  public IntegrationResponsesExtension getResponses() {
     return responses;
   }
 
   @Nullable
-  public IntegrationTimeoutInMillisExtension timeoutInMillis() {
+  public IntegrationCacheKeyParametersExtension getCacheKeyParameters() {
+    return cacheKeyParameters;
+  }
+
+  @Nullable
+  public IntegrationCacheNamespaceExtension getCacheNamespace() {
+    return cacheNamespace;
+  }
+
+  @Nullable
+  public IntegrationConnectionIdExtension getConnectionId() {
+    return connectionId;
+  }
+
+  @Nullable
+  public IntegrationConnectionTypeExtension getConnectionType() {
+    return connectionType;
+  }
+
+  @Nullable
+  public IntegrationCredentialsExtension getCredentials() {
+    return credentials;
+  }
+
+  @Nullable
+  public IntegrationContentHandlingExtension getContentHandling() {
+    return contentHandling;
+  }
+
+  @Nullable
+  public IntegrationHttpMethodExtension getHttpMethod() {
+    return httpMethod;
+  }
+
+  @Nullable
+  public IntegrationPassThroughBehaviorExtension getPassthroughBehavior() {
+    return passthroughBehavior;
+  }
+
+  @Nullable
+  public IntegrationTimeoutInMillisExtension getTimeoutInMillis() {
     return timeoutInMillis;
   }
 
   @Nullable
-  public IntegrationIntegrationTypeExtension type() {
+  public IntegrationIntegrationTypeExtension getType() {
     return type;
   }
 
   @Nullable
-  public IntegrationUriExtension uri() {
+  public IntegrationUriExtension getUri() {
     return uri;
   }
 
@@ -296,8 +296,8 @@ public class ApiGatewayIntegrationExtension implements ApiGatewayOperationExtens
   }
 
 
-  public List<IntegrationExtension<?>> getAllProperties() {
-    List<IntegrationExtension<?>> properties = new ArrayList<>();
+  public List<io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.ApiGatewayIntegrationExtension<?>> getAllProperties() {
+    List<io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.ApiGatewayIntegrationExtension<?>> properties = new ArrayList<>();
     if (Objects.nonNull(cacheKeyParameters)) properties.add(cacheKeyParameters);
     if (Objects.nonNull(cacheNamespace)) properties.add(cacheNamespace);
     if (Objects.nonNull(connectionId)) properties.add(connectionId);
@@ -325,8 +325,13 @@ public class ApiGatewayIntegrationExtension implements ApiGatewayOperationExtens
     final LinkedHashMap<String, Object> extension = new LinkedHashMap<>();
     getAllProperties()
         .stream()
-        .filter(IntegrationExtension::isValid)
+        .filter(io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.ApiGatewayIntegrationExtension::isValid)
         .forEach(property -> extension.put(property.getExtensionKey(), property.getExtensionValue()));
     return extension;
+  }
+
+  @Override
+  public boolean isValid() {
+    return true;
   }
 }

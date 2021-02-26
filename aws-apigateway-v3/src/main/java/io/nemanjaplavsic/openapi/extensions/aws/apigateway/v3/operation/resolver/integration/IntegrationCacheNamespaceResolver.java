@@ -4,18 +4,18 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations.ApiGatewa
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.configuration.ApiGatewayServiceProperties;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationCacheNamespaceExtension;
 import io.swagger.v3.oas.models.Operation;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 
 import java.util.Optional;
 
-@Component
-@RequiredArgsConstructor
 public class IntegrationCacheNamespaceResolver implements IntegrationResolver<IntegrationCacheNamespaceExtension> {
 
   private final ApiGatewayServiceProperties properties;
+
+  public IntegrationCacheNamespaceResolver(ApiGatewayServiceProperties properties) {
+    this.properties = properties;
+  }
 
   @Override
   public IntegrationCacheNamespaceExtension resolve(Operation operation, HandlerMethod handlerMethod) {

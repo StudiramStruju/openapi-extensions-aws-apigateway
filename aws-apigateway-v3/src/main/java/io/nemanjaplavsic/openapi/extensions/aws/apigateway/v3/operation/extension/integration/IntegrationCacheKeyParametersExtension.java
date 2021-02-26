@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class IntegrationCacheKeyParametersExtension implements IntegrationExtension<Set<String>> {
+public class IntegrationCacheKeyParametersExtension implements ApiGatewayIntegrationExtension<Set<String>> {
 
   public static final String NAME = "cacheKeyParameters";
 
@@ -22,7 +22,7 @@ public class IntegrationCacheKeyParametersExtension implements IntegrationExtens
     this.cacheKeyParameters = Objects.requireNonNullElse(cacheKeyParameters, new HashSet<>());
   }
 
-  public IntegrationCacheKeyParametersExtension cacheKeyParameter(String parameter) {
+  public IntegrationCacheKeyParametersExtension cacheKeyParameter(@Nullable String parameter) {
     if (StringUtils.hasText(parameter))
       this.cacheKeyParameters.add(parameter);
     return this;
@@ -33,7 +33,7 @@ public class IntegrationCacheKeyParametersExtension implements IntegrationExtens
     return this;
   }
 
-  public Set<String> cacheKeyParameters() {
+  public Set<String> getCacheKeyParameters() {
     return cacheKeyParameters;
   }
 
@@ -42,7 +42,7 @@ public class IntegrationCacheKeyParametersExtension implements IntegrationExtens
   }
 
   public Set<String> getExtensionValue() {
-    return cacheKeyParameters;
+    return getCacheKeyParameters();
   }
 
   @Override

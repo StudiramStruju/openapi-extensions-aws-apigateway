@@ -5,9 +5,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.StringJoiner;
 
-public class IntegrationHttpMethodExtension implements IntegrationExtension<String> {
+public class IntegrationHttpMethodExtension implements ApiGatewayIntegrationExtension<String> {
 
   public static final String NAME = "httpMethod";
 
@@ -31,18 +32,18 @@ public class IntegrationHttpMethodExtension implements IntegrationExtension<Stri
     return this;
   }
 
-  public IntegrationHttpMethodExtension requestMethod(RequestMethod requestMethod) {
-    this.requestMethod = Objects.requireNonNull(requestMethod, "RequestMethod cannot be null!");
+  public IntegrationHttpMethodExtension requestMethod(@Nullable RequestMethod requestMethod) {
+    this.requestMethod = requestMethod;
     return this;
   }
 
   @Nullable
-  public HttpMethod httpMethod() {
+  public HttpMethod getHttpMethod() {
     return httpMethod;
   }
 
   @Nullable
-  public RequestMethod requestMethod() {
+  public RequestMethod getRequestMethod() {
     return requestMethod;
   }
 
@@ -51,11 +52,12 @@ public class IntegrationHttpMethodExtension implements IntegrationExtension<Stri
     return NAME;
   }
 
+  @Nullable
   public String getExtensionValue() {
     if (HttpMethod.RESOLVE_FROM_METHOD.equals(httpMethod)) {
-      return requestMethod.name();
+      return Optional.ofNullable(requestMethod).map(RequestMethod::name).orElse(null);
     }
-    return httpMethod.key();
+    return Optional.ofNullable(httpMethod).map(HttpMethod::key).orElse(null);
   }
 
   @Override

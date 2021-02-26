@@ -104,7 +104,7 @@ public @interface ApiGatewayIntegration {
   /**
    * Specifies the TLS configuration for an integration.
    */
-/*  IntegrationTlsConfig tlsConfig() default @IntegrationTlsConfig;*/
+  /*  IntegrationTlsConfig tlsConfig() default @IntegrationTlsConfig;*/
 
   /**
    * The endpoint URI of the backend. For integrations of the aws type, this is an ARN value.

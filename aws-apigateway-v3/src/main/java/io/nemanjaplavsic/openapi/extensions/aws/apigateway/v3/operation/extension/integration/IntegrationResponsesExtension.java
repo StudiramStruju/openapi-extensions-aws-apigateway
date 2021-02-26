@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationResponsesExtension implements IntegrationExtension<LinkedHashMap<String, LinkedHashMap<String, Object>>> {
+public class IntegrationResponsesExtension implements ApiGatewayIntegrationExtension<LinkedHashMap<String, LinkedHashMap<String, Object>>> {
 
   public static final String NAME = "responses";
 
@@ -41,7 +41,7 @@ public class IntegrationResponsesExtension implements IntegrationExtension<Linke
     return this;
   }
 
-  public List<IntegrationResponseExtension> responses() {
+  public List<IntegrationResponseExtension> getResponses() {
     return responses;
   }
 

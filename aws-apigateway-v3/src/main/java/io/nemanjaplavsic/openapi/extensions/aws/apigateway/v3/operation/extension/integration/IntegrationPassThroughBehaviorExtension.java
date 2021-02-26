@@ -6,7 +6,7 @@ import org.springframework.lang.Nullable;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationPassThroughBehaviorExtension implements IntegrationExtension<String> {
+public class IntegrationPassThroughBehaviorExtension implements ApiGatewayIntegrationExtension<String> {
 
   public static final String NAME = "passthroughBehavior";
 
@@ -20,7 +20,7 @@ public class IntegrationPassThroughBehaviorExtension implements IntegrationExten
     this.passThroughBehavior = Objects.requireNonNullElse(passThroughBehavior, PassThroughBehavior.NONE);
   }
 
-  public PassThroughBehavior passThroughBehavior() {
+  public PassThroughBehavior getPassThroughBehavior() {
     return passThroughBehavior;
   }
 

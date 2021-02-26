@@ -1,13 +1,13 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.gatewayresponse.response;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.openapi.gatewayresponse.response.parameter;
 
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.gatewayresponse.GatewayResponseParameterSource;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.gatewayresponse.ResponseExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ConvertableExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ValidatableExtension;
 import org.springframework.lang.Nullable;
 
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class GatewayResponseParameterExtension implements ResponseExtension<String> {
+public class GatewayResponseParameterExtension implements ConvertableExtension<String>, ValidatableExtension {
 
 
   private final GatewayResponseParameterSource source;
@@ -59,31 +59,31 @@ public class GatewayResponseParameterExtension implements ResponseExtension<Stri
     return this;
   }
 
-  public GatewayResponseParameterSource source() {
+  @Nullable
+  public String getContextValue() {
+    return contextValue;
+  }
+
+  public GatewayResponseParameterSource getSource() {
     return source;
   }
 
-  public String headerName() {
+  public String getHeaderName() {
     return headerName;
   }
 
   @Nullable
-  public String contextValue() {
-    return contextValue;
-  }
-
-  @Nullable
-  public String staticValue() {
+  public String getStaticValue() {
     return staticValue;
   }
 
   @Nullable
-  public String stageVariable() {
+  public String getStageVariable() {
     return stageVariable;
   }
 
   public boolean matches(GatewayResponseParameterExtension param) {
-    return Objects.equals(source, param.source()) && Objects.equals(headerName, param.headerName());
+    return Objects.equals(source, param.getSource()) && Objects.equals(headerName, param.getHeaderName());
   }
 
   @Override
