@@ -5,46 +5,46 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.security.extension
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.security.extension.ApiGatewaySecurityExtension;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
-public class CognitoAuthorizerSecurityScheme extends SecurityScheme {
+public class ApiGatewayAuthorizerSecurityScheme extends SecurityScheme {
 
-  public CognitoAuthorizerSecurityScheme() {
+  public ApiGatewayAuthorizerSecurityScheme() {
     super();
   }
 
   @Override
-  public CognitoAuthorizerSecurityScheme in(In in) {
+  public ApiGatewayAuthorizerSecurityScheme in(In in) {
     super.in(in);
     return this;
   }
 
   @Override
-  public CognitoAuthorizerSecurityScheme name(String name) {
+  public ApiGatewayAuthorizerSecurityScheme name(String name) {
     super.name(name);
     return this;
   }
 
   @Override
-  public CognitoAuthorizerSecurityScheme description(String description) {
+  public ApiGatewayAuthorizerSecurityScheme description(String description) {
     super.description(description);
     return this;
   }
 
-  public CognitoAuthorizerSecurityScheme authType(ApiGatewayAuthTypeExtension authType) {
+  public ApiGatewayAuthorizerSecurityScheme authType(ApiGatewayAuthTypeExtension authType) {
     this.extension(authType);
     return this;
   }
 
-  public CognitoAuthorizerSecurityScheme authorizer(ApiGatewayAuthorizerExtension authorizer) {
+  public ApiGatewayAuthorizerSecurityScheme authorizer(ApiGatewayAuthorizerExtension authorizer) {
     this.extension(authorizer);
     return this;
   }
 
-  public CognitoAuthorizerSecurityScheme extension(ApiGatewaySecurityExtension<?> extension) {
+  public ApiGatewayAuthorizerSecurityScheme extension(ApiGatewaySecurityExtension<?> extension) {
     this.extension(extension.getExtensionKey(), extension.getExtensionValue());
     return this;
   }
 
-  public CognitoAuthorizerSecurityScheme extension(String name, Object value) {
+  public ApiGatewayAuthorizerSecurityScheme extension(String name, Object value) {
     this.addExtension(name, value);
     return this;
   }

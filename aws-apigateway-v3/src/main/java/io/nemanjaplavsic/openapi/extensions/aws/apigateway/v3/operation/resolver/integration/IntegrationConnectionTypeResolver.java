@@ -5,18 +5,18 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.configuration.ApiGate
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.ConnectionType;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationConnectionTypeExtension;
 import io.swagger.v3.oas.models.Operation;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 
 import java.util.Objects;
 import java.util.Optional;
 
-@Component
-@RequiredArgsConstructor
 public class IntegrationConnectionTypeResolver implements IntegrationResolver<IntegrationConnectionTypeExtension> {
 
   private final ApiGatewayServiceProperties properties;
+
+  public IntegrationConnectionTypeResolver(ApiGatewayServiceProperties properties) {
+    this.properties = properties;
+  }
 
   @Override
   public IntegrationConnectionTypeExtension resolve(Operation operation, HandlerMethod handlerMethod) {

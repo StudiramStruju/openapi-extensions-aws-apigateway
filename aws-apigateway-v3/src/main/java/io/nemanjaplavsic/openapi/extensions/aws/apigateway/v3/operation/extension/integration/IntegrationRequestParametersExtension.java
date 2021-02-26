@@ -9,32 +9,32 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationRequestParametersExtension implements IntegrationExtension<LinkedHashMap<String, String>> {
+public class IntegrationRequestParametersExtension implements ApiGatewayIntegrationExtension<LinkedHashMap<String, String>> {
 
   public static final String NAME = "requestParameters";
 
-  private final List<IntegrationRequestParameterExtension> requestParameters;
+  private final List<IntegrationRequestParameterExtension> parameters;
 
   public IntegrationRequestParametersExtension() {
-    this.requestParameters = new ArrayList<>();
+    this.parameters = new ArrayList<>();
   }
 
-  public IntegrationRequestParametersExtension(List<IntegrationRequestParameterExtension> requestParameters) {
-    this.requestParameters = Objects.requireNonNullElse(requestParameters, new ArrayList<>());
+  public IntegrationRequestParametersExtension(List<IntegrationRequestParameterExtension> parameters) {
+    this.parameters = Objects.requireNonNullElse(parameters, new ArrayList<>());
   }
 
   public IntegrationRequestParametersExtension parameter(IntegrationRequestParameterExtension parameter) {
     if (parameter.isValid()) {
-      requestParameters.stream()
+      parameters.stream()
           .filter(IntegrationRequestParameterExtension::isValid)
           .filter(existing -> existing.matches(parameter))
           .findFirst()
           .ifPresentOrElse(
               existing -> {
-                requestParameters.remove(existing);
-                requestParameters.add(parameter);
+                parameters.remove(existing);
+                parameters.add(parameter);
               },
-              () -> requestParameters.add(parameter));
+              () -> parameters.add(parameter));
     }
     return this;
   }
@@ -44,8 +44,8 @@ public class IntegrationRequestParametersExtension implements IntegrationExtensi
     return this;
   }
 
-  public List<IntegrationRequestParameterExtension> requestParameters() {
-    return requestParameters;
+  public List<IntegrationRequestParameterExtension> getParameters() {
+    return parameters;
   }
 
   @Override
@@ -56,7 +56,7 @@ public class IntegrationRequestParametersExtension implements IntegrationExtensi
   @Override
   public LinkedHashMap<String, String> getExtensionValue() {
     final LinkedHashMap<String, String> extension = new LinkedHashMap<>();
-    requestParameters.stream()
+    parameters.stream()
         .filter(IntegrationRequestParameterExtension::isValid)
         .forEach(property -> extension.put(property.getExtensionKey(), property.getExtensionValue()));
     return extension;
@@ -65,8 +65,8 @@ public class IntegrationRequestParametersExtension implements IntegrationExtensi
   @Override
   public boolean isValid() {
     try {
-      Objects.requireNonNull(requestParameters);
-      return !requestParameters.isEmpty();
+      Objects.requireNonNull(parameters);
+      return !parameters.isEmpty();
     } catch (NullPointerException e) {
       return false;
     }
@@ -77,18 +77,18 @@ public class IntegrationRequestParametersExtension implements IntegrationExtensi
     if (this == object) return true;
     if (!(object instanceof IntegrationRequestParametersExtension)) return false;
     IntegrationRequestParametersExtension that = (IntegrationRequestParametersExtension) object;
-    return requestParameters.equals(that.requestParameters);
+    return parameters.equals(that.parameters);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(requestParameters);
+    return Objects.hash(parameters);
   }
 
   @Override
   public String toString() {
     return new StringJoiner(", ", IntegrationRequestParametersExtension.class.getSimpleName() + "[", "]")
-        .add("requestParameters=" + requestParameters)
+        .add("requestParameters=" + parameters)
         .toString();
   }
 }

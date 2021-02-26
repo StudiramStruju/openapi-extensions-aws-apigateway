@@ -6,7 +6,7 @@ import org.springframework.lang.Nullable;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationConnectionTypeExtension implements IntegrationExtension<String> {
+public class IntegrationConnectionTypeExtension implements ApiGatewayIntegrationExtension<String> {
 
   public static final String NAME = "connectionType";
 
@@ -25,7 +25,7 @@ public class IntegrationConnectionTypeExtension implements IntegrationExtension<
     return this;
   }
 
-  public ConnectionType connectionType() {
+  public ConnectionType getConnectionType() {
     return connectionType;
   }
 
@@ -35,7 +35,7 @@ public class IntegrationConnectionTypeExtension implements IntegrationExtension<
   }
 
   public String getExtensionValue() {
-    return connectionType.key();
+    return getConnectionType().key();
   }
 
   @Override

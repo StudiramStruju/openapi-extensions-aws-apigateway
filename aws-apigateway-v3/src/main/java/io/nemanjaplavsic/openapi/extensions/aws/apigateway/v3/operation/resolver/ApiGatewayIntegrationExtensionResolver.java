@@ -15,13 +15,9 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationTimeoutInMillisResolver;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.resolver.integration.IntegrationUriExtensionResolver;
 import io.swagger.v3.oas.models.Operation;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 
-@Component
-@RequiredArgsConstructor
-public class ApiGatewayIntegrationExtensionResolver implements OperationExtensionResolver<ApiGatewayIntegrationExtension> {
+public class ApiGatewayIntegrationExtensionResolver implements OperationAwsExtensionResolver<ApiGatewayIntegrationExtension> {
 
   private final IntegrationCacheKeyParametersResolver cacheKeyParametersResolver;
   private final IntegrationCacheNamespaceResolver cacheNamespaceResolver;
@@ -36,6 +32,35 @@ public class ApiGatewayIntegrationExtensionResolver implements OperationExtensio
   private final IntegrationRequestParametersResolver requestParametersResolver;
   private final IntegrationRequestTemplatesResolver requestTemplatesResolver;
   private final IntegrationResponsesResolver responsesResolver;
+
+
+  public ApiGatewayIntegrationExtensionResolver(IntegrationCacheKeyParametersResolver cacheKeyParametersResolver,
+                                                IntegrationCacheNamespaceResolver cacheNamespaceResolver,
+                                                IntegrationConnectionIdResolver connectionIdResolver,
+                                                IntegrationConnectionTypeResolver connectionTypeResolver,
+                                                IntegrationCredentialsResolver credentialsResolver,
+                                                IntegrationHttpMethodResolver httpMethodResolver,
+                                                IntegrationIntegrationTypeResolver integrationIntegrationTypeResolver,
+                                                IntegrationPassTroughBehaviourResolver integrationPassTroughBehaviourResolver,
+                                                IntegrationTimeoutInMillisResolver integrationTimeoutInMillisResolver,
+                                                IntegrationUriExtensionResolver uriExtensionResolver,
+                                                IntegrationRequestParametersResolver requestParametersResolver,
+                                                IntegrationRequestTemplatesResolver requestTemplatesResolver,
+                                                IntegrationResponsesResolver responsesResolver) {
+    this.cacheKeyParametersResolver = cacheKeyParametersResolver;
+    this.cacheNamespaceResolver = cacheNamespaceResolver;
+    this.connectionIdResolver = connectionIdResolver;
+    this.connectionTypeResolver = connectionTypeResolver;
+    this.credentialsResolver = credentialsResolver;
+    this.httpMethodResolver = httpMethodResolver;
+    this.integrationIntegrationTypeResolver = integrationIntegrationTypeResolver;
+    this.integrationPassTroughBehaviourResolver = integrationPassTroughBehaviourResolver;
+    this.integrationTimeoutInMillisResolver = integrationTimeoutInMillisResolver;
+    this.uriExtensionResolver = uriExtensionResolver;
+    this.requestParametersResolver = requestParametersResolver;
+    this.requestTemplatesResolver = requestTemplatesResolver;
+    this.responsesResolver = responsesResolver;
+  }
 
   @Override
   public ApiGatewayIntegrationExtension resolve(Operation operation, HandlerMethod handlerMethod) {

@@ -1,6 +1,7 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.template;
 
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ConvertableExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ValidatableExtension;
 import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
@@ -9,7 +10,7 @@ import org.springframework.util.StringUtils;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationResponseTemplateExtension implements IntegrationExtension<String> {
+public class IntegrationResponseTemplateExtension implements ConvertableExtension<String>, ValidatableExtension {
 
   public static final String DEFAULT_TEMPLATE = "$input.body";
   public static final String DEFAULT_JSON_TEMPLATE = "$input.json('$')";
@@ -30,29 +31,26 @@ public class IntegrationResponseTemplateExtension implements IntegrationExtensio
     }
   }
 
-  public MediaType mediaType() {
+  public MediaType getMediaType() {
     return mediaType;
   }
 
-  public String template() {
+  public String getTemplate() {
     return template;
   }
 
   public boolean matches(IntegrationResponseTemplateExtension template) {
-    return Objects.equals(mediaType, template.mediaType());
+    return Objects.equals(mediaType, template.getMediaType());
   }
 
-  @Override
   public String getExtensionKey() {
     return mediaType.toString();
   }
 
-  @Override
   public String getExtensionValue() {
     return template;
   }
 
-  @Override
   public boolean isValid() {
     try {
       Objects.requireNonNull(mediaType);

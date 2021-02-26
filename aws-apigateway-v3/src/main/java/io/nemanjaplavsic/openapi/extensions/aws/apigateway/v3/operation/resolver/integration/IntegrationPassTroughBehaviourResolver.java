@@ -5,18 +5,18 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.configuration.ApiGate
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.PassThroughBehavior;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationPassThroughBehaviorExtension;
 import io.swagger.v3.oas.models.Operation;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 
 import java.util.Objects;
 import java.util.Optional;
 
-@Component
-@RequiredArgsConstructor
 public class IntegrationPassTroughBehaviourResolver implements IntegrationResolver<IntegrationPassThroughBehaviorExtension> {
 
   private final ApiGatewayServiceProperties properties;
+
+  public IntegrationPassTroughBehaviourResolver(ApiGatewayServiceProperties properties) {
+    this.properties = properties;
+  }
 
   @Override
   public IntegrationPassThroughBehaviorExtension resolve(Operation operation, HandlerMethod handlerMethod) {
@@ -24,7 +24,7 @@ public class IntegrationPassTroughBehaviourResolver implements IntegrationResolv
         .map(ApiGatewayIntegration::passthroughBehavior)
         .orElse(null);
 
-    final PassThroughBehavior passThroughBehaviorProperties = properties.getPassthroughBehavior();
+    final PassThroughBehavior passThroughBehaviorProperties = properties.getPassThroughBehavior();
 
     if (Objects.nonNull(passThroughBehavior) && Objects.nonNull(passThroughBehavior.key())) {
       return new IntegrationPassThroughBehaviorExtension(passThroughBehavior);

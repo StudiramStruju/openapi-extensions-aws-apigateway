@@ -124,7 +124,7 @@ public class IntegrationResponsesResolver implements IntegrationResolver<Integra
   }
 
   public IntegrationResponseParameterExtension resolveParameter(IntegrationResponseParameter parameter) {
-   return new IntegrationResponseParameterExtension(parameter.source(), parameter.methodHeaderName())
+    return new IntegrationResponseParameterExtension(parameter.source(), parameter.methodHeaderName())
         .integrationParameterType(parameter.integrationParameterType())
         .integrationParameterName(parameter.integrationParameterName())
         .staticValue(parameter.staticValue());

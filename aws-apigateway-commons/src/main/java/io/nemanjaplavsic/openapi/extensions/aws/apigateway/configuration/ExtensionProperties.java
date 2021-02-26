@@ -1,14 +1,11 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.configuration;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
-@Getter
-@EqualsAndHashCode
-@ToString
+import java.util.Objects;
+import java.util.StringJoiner;
+
 @ConfigurationProperties(prefix = "openapi.extension")
 public class ExtensionProperties {
 
@@ -17,5 +14,29 @@ public class ExtensionProperties {
   @ConstructorBinding
   public ExtensionProperties(AwsProperties aws) {
     this.aws = aws;
+  }
+
+  public AwsProperties getAws() {
+    return aws;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) return true;
+    if (!(object instanceof ExtensionProperties)) return false;
+    ExtensionProperties that = (ExtensionProperties) object;
+    return getAws().equals(that.getAws());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getAws());
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", ExtensionProperties.class.getSimpleName() + "[", "]")
+        .add("aws=" + aws)
+        .toString();
   }
 }

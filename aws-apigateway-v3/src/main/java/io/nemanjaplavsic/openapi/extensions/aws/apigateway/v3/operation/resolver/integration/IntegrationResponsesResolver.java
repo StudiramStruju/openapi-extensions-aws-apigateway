@@ -8,16 +8,15 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.Integrati
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.IntegrationResponseParameterType;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationResponsesExtension;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.IntegrationResponseExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.IntegrationResponseParameterExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.IntegrationResponseParametersExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.IntegrationResponseTemplateExtension;
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.IntegrationResponseTemplatesExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.parameter.IntegrationResponseParameterExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.parameter.IntegrationResponseParametersExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.template.IntegrationResponseTemplateExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.response.template.IntegrationResponseTemplatesExtension;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.headers.Header;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
 public class IntegrationResponsesResolver implements IntegrationResolver<IntegrationResponsesExtension> {
 
   @Override

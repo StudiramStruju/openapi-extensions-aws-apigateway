@@ -1,9 +1,10 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.security.extension;
 
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.AwsExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ConvertableExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ValidatableExtension;
 import org.springframework.lang.NonNull;
 
-public interface ApiGatewaySecurityExtension<T> extends AwsExtension<T> {
+public interface ApiGatewaySecurityExtension<T> extends ConvertableExtension<T>, ValidatableExtension {
 
   @NonNull
   @Override

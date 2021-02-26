@@ -5,7 +5,7 @@ import org.springframework.lang.Nullable;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationTimeoutInMillisExtension implements IntegrationExtension<Integer> {
+public class IntegrationTimeoutInMillisExtension implements ApiGatewayIntegrationExtension<Integer> {
 
   public static final String NAME = "timeoutInMillis";
   public static final int DEFAULT = 29000;
@@ -25,7 +25,7 @@ public class IntegrationTimeoutInMillisExtension implements IntegrationExtension
     return this;
   }
 
-  public Integer timeoutInMillis() {
+  public Integer getTimeoutInMillis() {
     return timeoutInMillis;
   }
 

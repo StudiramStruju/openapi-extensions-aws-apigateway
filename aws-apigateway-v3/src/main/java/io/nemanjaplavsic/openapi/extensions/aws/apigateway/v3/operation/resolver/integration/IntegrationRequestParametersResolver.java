@@ -8,8 +8,6 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extensio
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.request.IntegrationRequestParameterExtension;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.parameters.Parameter;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 
 import java.util.ArrayList;
@@ -19,8 +17,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Slf4j
-@Component
 public class IntegrationRequestParametersResolver implements IntegrationResolver<IntegrationRequestParametersExtension> {
 
   @Override

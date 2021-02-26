@@ -8,7 +8,7 @@ import springfox.documentation.spi.service.contexts.OperationContext;
 
 import java.util.stream.Stream;
 
-public interface IntegrationResolver<E extends IntegrationExtension<?  extends VendorExtension<?>>> {
+public interface IntegrationResolver<E extends IntegrationExtension<? extends VendorExtension<?>>> {
 
   @Nullable
   E resolve(OperationContext context);

@@ -6,7 +6,7 @@ import org.springframework.lang.Nullable;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationContentHandlingExtension implements IntegrationExtension<String> {
+public class IntegrationContentHandlingExtension implements ApiGatewayIntegrationExtension<String> {
 
   public static final String NAME = "contentHandling";
 
@@ -25,7 +25,7 @@ public class IntegrationContentHandlingExtension implements IntegrationExtension
     return this;
   }
 
-  public ContentHandling contentHandling() {
+  public ContentHandling getContentHandling() {
     return contentHandling;
   }
 
@@ -35,7 +35,7 @@ public class IntegrationContentHandlingExtension implements IntegrationExtension
   }
 
   public String getExtensionValue() {
-    return this.contentHandling.key();
+    return getContentHandling().key();
   }
 
   @Override

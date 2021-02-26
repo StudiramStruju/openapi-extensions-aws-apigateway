@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class IntegrationRequestTemplatesExtension implements IntegrationExtension<LinkedHashMap<String, String>> {
+public class IntegrationRequestTemplatesExtension implements ApiGatewayIntegrationExtension<LinkedHashMap<String, String>> {
 
   public static final String NAME = "requestTemplates";
 
@@ -38,6 +38,10 @@ public class IntegrationRequestTemplatesExtension implements IntegrationExtensio
   public IntegrationRequestTemplatesExtension templates(List<IntegrationRequestTemplateExtension> templates) {
     templates.forEach(this::template);
     return this;
+  }
+
+  public List<IntegrationRequestTemplateExtension> getTemplates() {
+    return templates;
   }
 
   @Override

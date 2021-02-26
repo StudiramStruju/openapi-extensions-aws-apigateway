@@ -1,6 +1,7 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.gatewayresponse.response;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.openapi.gatewayresponse.response.parameter;
 
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.gatewayresponse.ResponseExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ConvertableExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ValidatableExtension;
 import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
@@ -9,32 +10,32 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class GatewayResponseParametersExtension implements ResponseExtension<LinkedHashMap<String, String>> {
+public class GatewayResponseParametersExtension implements ConvertableExtension<LinkedHashMap<String, String>>, ValidatableExtension {
 
   public static final String NAME = "responseParameters";
 
-  private final List<GatewayResponseParameterExtension> responseParameters;
+  private final List<GatewayResponseParameterExtension> parameters;
 
   public GatewayResponseParametersExtension() {
     this(null);
   }
 
-  public GatewayResponseParametersExtension(@Nullable List<GatewayResponseParameterExtension> responseParameters) {
-    this.responseParameters = Objects.requireNonNullElse(responseParameters, new ArrayList<>());
+  public GatewayResponseParametersExtension(@Nullable List<GatewayResponseParameterExtension> parameters) {
+    this.parameters = Objects.requireNonNullElse(parameters, new ArrayList<>());
   }
 
   public GatewayResponseParametersExtension parameter(GatewayResponseParameterExtension parameter) {
     if (parameter.isValid()) {
-      responseParameters.stream()
+      parameters.stream()
           .filter(GatewayResponseParameterExtension::isValid)
           .filter(existing -> existing.matches(parameter))
           .findFirst()
           .ifPresentOrElse(
               existing -> {
-                responseParameters.remove(existing);
-                responseParameters.add(parameter);
+                parameters.remove(existing);
+                parameters.add(parameter);
               },
-              () -> responseParameters.add(parameter));
+              () -> parameters.add(parameter));
     }
     return this;
   }
@@ -44,8 +45,8 @@ public class GatewayResponseParametersExtension implements ResponseExtension<Lin
     return this;
   }
 
-  public List<GatewayResponseParameterExtension> parameters() {
-    return responseParameters;
+  public List<GatewayResponseParameterExtension> getParameters() {
+    return parameters;
   }
 
 
@@ -57,7 +58,7 @@ public class GatewayResponseParametersExtension implements ResponseExtension<Lin
   @Override
   public LinkedHashMap<String, String> getExtensionValue() {
     LinkedHashMap<String, String> extension = new LinkedHashMap<>();
-    responseParameters.stream()
+    parameters.stream()
         .filter(GatewayResponseParameterExtension::isValid)
         .forEach(property -> extension.put(property.getExtensionKey(), property.getExtensionValue()));
     return extension;
@@ -66,8 +67,8 @@ public class GatewayResponseParametersExtension implements ResponseExtension<Lin
   @Override
   public boolean isValid() {
     try {
-      Objects.requireNonNull(responseParameters);
-      return !responseParameters.isEmpty();
+      Objects.requireNonNull(parameters);
+      return !parameters.isEmpty();
     } catch (NullPointerException e) {
       return false;
     }
@@ -78,18 +79,18 @@ public class GatewayResponseParametersExtension implements ResponseExtension<Lin
     if (this == object) return true;
     if (!(object instanceof GatewayResponseParametersExtension)) return false;
     GatewayResponseParametersExtension that = (GatewayResponseParametersExtension) object;
-    return responseParameters.equals(that.responseParameters);
+    return parameters.equals(that.parameters);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(responseParameters);
+    return Objects.hash(parameters);
   }
 
   @Override
   public String toString() {
     return new StringJoiner(", ", GatewayResponseParametersExtension.class.getSimpleName() + "[", "]")
-        .add("responseParameters=" + responseParameters)
+        .add("responseParameters=" + parameters)
         .toString();
   }
 }

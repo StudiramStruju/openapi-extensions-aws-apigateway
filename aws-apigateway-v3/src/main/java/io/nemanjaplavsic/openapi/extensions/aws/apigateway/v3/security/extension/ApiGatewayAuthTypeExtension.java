@@ -1,5 +1,7 @@
 package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.security.extension;
 
+import org.springframework.util.StringUtils;
+
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -19,6 +21,14 @@ public class ApiGatewayAuthTypeExtension implements ApiGatewaySecurityExtension<
 
   public static ApiGatewayAuthTypeExtension awsSigV4() {
     return new ApiGatewayAuthTypeExtension("awsSigv4");
+  }
+
+  public static ApiGatewayAuthTypeExtension token() {
+    return new ApiGatewayAuthTypeExtension("token");
+  }
+
+  public static ApiGatewayAuthTypeExtension request() {
+    return new ApiGatewayAuthTypeExtension("request");
   }
 
   public String typeName() {
@@ -52,5 +62,10 @@ public class ApiGatewayAuthTypeExtension implements ApiGatewaySecurityExtension<
     return new StringJoiner(", ", ApiGatewayAuthTypeExtension.class.getSimpleName() + "[", "]")
         .add("typeName='" + typeName + "'")
         .toString();
+  }
+
+  @Override
+  public boolean isValid() {
+    return StringUtils.hasText(typeName);
   }
 }

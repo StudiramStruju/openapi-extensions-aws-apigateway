@@ -1,6 +1,7 @@
-package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.gatewayresponse.response;
+package io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.openapi.gatewayresponse.response.template;
 
-import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.gatewayresponse.ResponseExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ConvertableExtension;
+import io.nemanjaplavsic.openapi.extensions.aws.apigateway.extension.ValidatableExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
@@ -10,7 +11,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 @Slf4j
-public class GatewayResponseTemplateExtension implements ResponseExtension<String> {
+public class GatewayResponseTemplateExtension implements ConvertableExtension<String>, ValidatableExtension {
 
   public static final String DEFAULT_TEMPLATE = "{\n" +
       "  \"message\":\"$context.error.messageString\",\n" +
@@ -41,17 +42,16 @@ public class GatewayResponseTemplateExtension implements ResponseExtension<Strin
     return new GatewayResponseTemplateExtension(MediaType.APPLICATION_JSON, SIMPLE_TEMPLATE);
   }
 
-
-  public MediaType mediaType() {
+  public MediaType getMediaType() {
     return mediaType;
   }
 
-  public String template() {
+  public String getTemplate() {
     return template;
   }
 
   public boolean matches(GatewayResponseTemplateExtension template) {
-    return Objects.equals(mediaType, template.mediaType());
+    return Objects.equals(mediaType, template.getMediaType());
   }
 
   @Override

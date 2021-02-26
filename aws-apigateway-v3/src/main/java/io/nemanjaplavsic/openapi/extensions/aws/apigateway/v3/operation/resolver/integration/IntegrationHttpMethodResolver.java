@@ -4,9 +4,8 @@ import io.nemanjaplavsic.openapi.extensions.aws.apigateway.annotations.ApiGatewa
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.enumeration.HttpMethod;
 import io.nemanjaplavsic.openapi.extensions.aws.apigateway.v3.operation.extension.integration.IntegrationHttpMethodExtension;
 import io.swagger.v3.oas.models.Operation;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,11 +22,34 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Slf4j
-@Component
 public class IntegrationHttpMethodResolver implements IntegrationResolver<IntegrationHttpMethodExtension> {
 
-  private final Map<String, RequestMethodEvaluation> rme = new HashMap<>();
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(IntegrationHttpMethodResolver.class);
+  private final Map<String, RequestMethodEvaluation> methodEvaluationCache;
+
+  public IntegrationHttpMethodResolver() {
+    this.methodEvaluationCache = new HashMap<>();
+  }
+
+  public static RequestMethodEvaluation extractRequestMethod(HandlerMethod handlerMethod, @Nullable RequestMethodEvaluation evaluated) {
+    if (handlerMethod.hasMethodAnnotation(GetMapping.class)) return new RequestMethodEvaluation(1, RequestMethod.GET);
+    if (handlerMethod.hasMethodAnnotation(PostMapping.class)) return new RequestMethodEvaluation(1, RequestMethod.POST);
+    if (handlerMethod.hasMethodAnnotation(PutMapping.class)) return new RequestMethodEvaluation(1, RequestMethod.PUT);
+    if (handlerMethod.hasMethodAnnotation(DeleteMapping.class)) return new RequestMethodEvaluation(1, RequestMethod.DELETE);
+    if (handlerMethod.hasMethodAnnotation(PatchMapping.class)) return new RequestMethodEvaluation(1, RequestMethod.PATCH);
+    if (handlerMethod.hasMethodAnnotation(RequestMapping.class)) {
+      final RequestMapping methodAnnotation = Objects.requireNonNull(handlerMethod.getMethodAnnotation(RequestMapping.class));
+      if (Objects.isNull(evaluated)) {
+        return new RequestMethodEvaluation(methodAnnotation.method().length, methodAnnotation.method()[0]);
+      } else {
+        final RequestMethod requestMethod = Arrays.stream(methodAnnotation.method())
+            .filter(method -> !method.equals(evaluated.requestMethod())).findFirst()
+            .orElse(null);
+        return evaluated.requestMethod(requestMethod);
+      }
+    }
+    throw new RuntimeException(String.format("Failed to evaluate method '%s' for request method!", handlerMethod.getMethod().getName()));
+  }
 
   @Override
   public IntegrationHttpMethodExtension resolve(Operation operation, HandlerMethod handlerMethod) {
@@ -39,7 +61,7 @@ public class IntegrationHttpMethodResolver implements IntegrationResolver<Integr
 
     final RequestMethodEvaluation evaluation;
     try {
-      evaluation = extractRequestMethod(handlerMethod, rme.get(methodName));
+      evaluation = extractRequestMethod(handlerMethod, methodEvaluationCache.get(methodName));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       return new IntegrationHttpMethodExtension(null);
@@ -55,11 +77,11 @@ public class IntegrationHttpMethodResolver implements IntegrationResolver<Integr
       return new IntegrationHttpMethodExtension(null);
     }
 
-    if (rme.containsKey(methodName) && evaluation.done()) {
-      rme.remove(methodName);
+    if (methodEvaluationCache.containsKey(methodName) && evaluation.done()) {
+      methodEvaluationCache.remove(methodName);
       log.debug("Removing request method evaluation entry {}", methodName);
     } else {
-      rme.put(methodName, evaluation);
+      methodEvaluationCache.put(methodName, evaluation);
       log.debug("Adding request method evaluation entry {}", methodName);
     }
 
@@ -94,26 +116,6 @@ public class IntegrationHttpMethodResolver implements IntegrationResolver<Integr
     public boolean done() {
       return count.get() >= totalCount();
     }
-  }
-
-  public static RequestMethodEvaluation extractRequestMethod(HandlerMethod handlerMethod, @Nullable RequestMethodEvaluation evaluated) {
-    if (handlerMethod.hasMethodAnnotation(GetMapping.class)) return new RequestMethodEvaluation(1, RequestMethod.GET);
-    if (handlerMethod.hasMethodAnnotation(PostMapping.class)) return new RequestMethodEvaluation(1, RequestMethod.POST);
-    if (handlerMethod.hasMethodAnnotation(PutMapping.class)) return new RequestMethodEvaluation(1, RequestMethod.PUT);
-    if (handlerMethod.hasMethodAnnotation(DeleteMapping.class)) return new RequestMethodEvaluation(1, RequestMethod.DELETE);
-    if (handlerMethod.hasMethodAnnotation(PatchMapping.class)) return new RequestMethodEvaluation(1, RequestMethod.PATCH);
-    if (handlerMethod.hasMethodAnnotation(RequestMapping.class)) {
-      final RequestMapping methodAnnotation = Objects.requireNonNull(handlerMethod.getMethodAnnotation(RequestMapping.class));
-      if (Objects.isNull(evaluated)) {
-        return new RequestMethodEvaluation(methodAnnotation.method().length, methodAnnotation.method()[0]);
-      } else {
-        final RequestMethod requestMethod = Arrays.stream(methodAnnotation.method())
-            .filter(method -> !method.equals(evaluated.requestMethod())).findFirst()
-            .orElse(null);
-        return evaluated.requestMethod(requestMethod);
-      }
-    }
-    throw new RuntimeException(String.format("Failed to evaluate method '%s' for request method!", handlerMethod.getMethod().getName()));
   }
 
 }

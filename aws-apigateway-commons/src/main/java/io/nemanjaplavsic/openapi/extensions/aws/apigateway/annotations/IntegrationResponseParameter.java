@@ -17,5 +17,5 @@ public @interface IntegrationResponseParameter {
 
   String staticValue() default "";
 
-  String integrationParameterName() default  "";
+  String integrationParameterName() default "";
 }
